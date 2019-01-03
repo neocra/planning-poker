@@ -23,7 +23,7 @@ jobs:
       - task: CopyFiles@2
         displayName: 'Copy Files to: $(build.artifactstagingdirectory)/web/'
         inputs:
-          Contents: '**/PhotoSort/package/WebApp.zip'
+          Contents: '**/Game.Planning.Poker/package/WebApp.zip'
           TargetFolder: '$(build.artifactstagingdirectory)/web/'
           flattenFolders: true
       - task: PublishBuildArtifacts@1
