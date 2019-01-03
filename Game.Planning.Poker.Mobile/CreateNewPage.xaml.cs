@@ -2,9 +2,9 @@
 
 namespace Game.Planning.Poker.Mobile
 {
-    public partial class ScorePage : ContentPage
+    public partial class CreateNewPage : ContentPage
     {
-        public ScorePage()
+        public CreateNewPage()
         {
             this.InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+             x:Class="Game.Planning.Poker.Mobile.MainPage">
+
+    <Grid BackgroundColor="#FFFFFF" RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="400" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <skia:SKCanvasView PaintSurface="OnCanvasViewPaintSurface" 
+                           VerticalOptions="FillAndExpand" 
+                           HorizontalOptions="FillAndExpand">
+        </skia:SKCanvasView>
+        
+        <Entry Grid.Row="1" Margin="10" VerticalOptions="End" Text="{Binding FullName}" Placeholder="What your name ?" />
+ 
+        <Button Margin="10" VerticalOptions="Start" Grid.Row="2" Text="Ok" Command="{Binding UpdateCommand}" />
+    </Grid>
+</ContentPage>

@@ -14,13 +14,15 @@ namespace Game.Planning.Poker.Mobile.Domain
 
         private Func<Player, Task> newPlayer;
         private Func<Task> startTurn;
-        private readonly List<Func<Player, int, Task>> newVote = new List<Func<Player, int, Task>>();
+        private Func<Task> displayCallback;
+        private Func<Player, int, Task> newVote;
         private string gameCode;
 
         public GameConnection()
         {
             this.connection = new HubConnectionBuilder()
-                .WithUrl("http://10.1.1.97:5000/pokerhub")
+//                .WithUrl("http://10.1.1.97:5000/pokerhub")
+                .WithUrl("http://10.10.1.36:5000/pokerhub")
                 .Build();
 
             this.connection.Closed += async (error) =>
@@ -48,11 +50,18 @@ namespace Game.Planning.Poker.Mobile.Domain
                     Name = playerDto.Name,
                 };
                 
-                foreach (var newVote in this.newVote)
-                {
-                    Device.BeginInvokeOnMainThread(() => newVote(player, vote).Fire());
-                }               
+                Device.BeginInvokeOnMainThread(() => this.newVote(player, vote).Fire());
             });
+            
+            this.connection.On("Display", () =>
+            {                
+                Device.BeginInvokeOnMainThread(() => this.displayCallback().Fire());
+            });
+            
+            this.connection.On("StartTurn", () =>
+            {                
+                Device.BeginInvokeOnMainThread(() => this.startTurn().Fire());
+            });       
         }
 
         public async Task StartGameAsync(string gameCode, Player player)
@@ -72,15 +81,26 @@ namespace Game.Planning.Poker.Mobile.Domain
         {
             this.newPlayer = newPlayer;
         }
+        
+        public async Task UpdatePlayerAsync(Player player)
+        {
+            var playerDto = new PlayerDto
+            {
+                Id = player.Id, 
+                Name = player.Name
+            };
+            
+            await this.connection.InvokeAsync("JoinGame", gameCode, playerDto);
+        }
 
-        public async Task VoteAsync(Player player, int vote)
+        public async Task VoteAsync(Player player, double vote)
         {
             await this.connection.InvokeAsync("Vote", this.gameCode, player, vote);
         }
                 
         public void CallbackVote(Func<Player, int, Task> newVote)
         {
-            this.newVote.Add(newVote);
+            this.newVote = newVote;
         }
 
         public void CallbackStartTurn(Func<Task> startTurn)
@@ -91,6 +111,16 @@ namespace Game.Planning.Poker.Mobile.Domain
         public async Task StartTurn()
         {
             await this.connection.InvokeAsync("StartTurn", this.gameCode);
+        }
+
+        public void CallbackDisplay(Func<Task> displayCallback)
+        {
+            this.displayCallback = displayCallback;
+        }
+
+        public async Task Display()
+        {
+            await this.connection.InvokeAsync("Display", this.gameCode);
         }
     }
 }

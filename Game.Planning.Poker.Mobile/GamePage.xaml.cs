@@ -2,12 +2,19 @@
 
 namespace Game.Planning.Poker.Mobile
 {
-    public partial class JoinPage : ContentPage
+    public partial class GamePage : ContentPage
     {
-        public JoinPage()
+        public GamePage()
         {
             this.InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
+        }
+
+        private void ListView_OnItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            var vm = this.BindingContext as GameViewModel;
+            
+            vm.VoteCommand.Execute(e.Item);
         }
     }
 }

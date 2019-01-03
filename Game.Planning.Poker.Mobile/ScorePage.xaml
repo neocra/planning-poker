@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Game.Planning.Poker.Mobile.MainPage">
-
-    <Grid BackgroundColor="#FFFFFF" RowSpacing="0">
+             x:Class="Game.Planning.Poker.Mobile.ScorePage">
+    <Grid BackgroundColor="#FFFFFF">    
         <Grid.RowDefinitions>
+            <RowDefinition Height="200" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Button Grid.Row="0" Text="Create New" Command="{Binding CreateNewCommand}" />
-
-        <Button Grid.Row="1" Text="Join" Command="{Binding JoinCommand}" />
+        </Grid.RowDefinitions>    
+        <Grid Grid.Row="0" HeightRequest="200">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Text="Display" Command="{Binding DisplayCommand}" />
+            <Button Grid.Column="1" Text="Next Turn" Command="{Binding NextTurnCommand}" />
+        </Grid>     
+          
+        <Grid Grid.Row="1" >            
+            <CollectionView ItemsSource="{Binding ScorePlayers}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="2" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                           <Grid HeightRequest="150" WidthRequest="150">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="80" />
+                                </Grid.RowDefinitions>
+                                
+                                <Label Grid.Row="0" Text="{Binding Name}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                
+                                <Grid Grid.Row="1" IsVisible="{Binding ShowHasScore}" HorizontalOptions="Center">
+                                    <Label Text="V" />
+                                </Grid>
+                                <Grid Grid.Row="1" IsVisible="{Binding Show}" HorizontalOptions="Center">
+                                    <Label TextColor="{Binding Score.Color}" FontAttributes="Bold" Margin="2" VerticalOptions="Center" Text="{Binding Score.Name}" FontSize="20" HorizontalOptions="Center" />                            
+                                </Grid>
+                            </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
     </Grid>
 </ContentPage>
