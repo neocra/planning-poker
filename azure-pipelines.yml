@@ -7,9 +7,9 @@ jobs:
         inputs:
           updateAssemblyInfo: true
       - task: NuGetToolInstaller@0
-        displayName: 'Use NuGet 4.4.1'
+        displayName: 'Use NuGet 4.9.2'
         inputs:
-          versionSpec: 4.4.1
+          versionSpec: 4.9.2
       - task: NuGetCommand@2
         displayName: 'NuGet restore'
         inputs:
