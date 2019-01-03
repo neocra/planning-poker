@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Game.Planning.Poker.Mobile.MainPage">
+
+    <Grid BackgroundColor="#FFFFFF" RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Text="Create New" Command="{Binding CreateNewCommand}" />
+
+        <Button Grid.Row="1" Text="Join" Command="{Binding JoinCommand}" />
+    </Grid>
+</ContentPage>

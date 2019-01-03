@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Game.Planning.Poker.Mobile.JoinPage">
+
+    <Grid BackgroundColor="#FFFFFF" RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Text="Your name :" />
+        <Entry Grid.Row="1" Text="{Binding FullName}" />
+        <Button Grid.Row="2" Text="Scan" Command="{Binding ScanCommand}" />
+        <Label Grid.Row="3" Text="Game code :" />
+        <Entry Grid.Row="4" Text="{Binding GameCode}" />
+        <Button Grid.Row="5" Text="Join" Command="{Binding JoinCommand}" />
+    </Grid>
+</ContentPage>
