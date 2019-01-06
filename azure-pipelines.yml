@@ -52,6 +52,14 @@ jobs:
     dependsOn: Windows
     pool: Hosted macOS
     steps:
+      - task: InstallAppleCertificate@2
+        displayName: 'Install an Apple certificate'
+        inputs:
+          certSecureFile: '53a1d7c8-2775-4d0a-8f66-828d6b16efbd'
+      - task: InstallAppleProvisioningProfile@1
+        displayName: 'Install an Apple provisioning profile'
+        inputs:
+          provProfileSecureFile: 'bf056c90-682e-4a89-9936-a2dfce50ad04'
       - task: DownloadBuildArtifacts@0
         displayName: 'Download Build Artifacts'
         inputs:
@@ -59,3 +67,9 @@ jobs:
       - script: /bin/bash drop/variables.sh
         workingDirectory: '$(System.ArtifactsDirectory)'
         displayName: 'Run script to reload variables'
+      - task: XamariniOS@2
+        displayName: 'Build Xamarin.iOS solution **/*.sln'
+        inputs:
+          solutionFile: 'Game.Planning.Poker.Mobile.iOS/Game.Planning.Poker.Mobile.iOS.csproj'
+          clean: true
+          buildForSimulator: false
