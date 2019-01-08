@@ -74,7 +74,7 @@ jobs:
       - task: NuGetCommand@2
         displayName: 'NuGet restore'
         inputs:
-          restoreSolution: '**\*.sln'
+          restoreSolution: '**/*.sln'
       - task: XamariniOS@2
         displayName: 'Build Xamarin.iOS solution **/*.sln'
         inputs:
