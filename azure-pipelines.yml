@@ -67,6 +67,14 @@ jobs:
       - script: /bin/bash drop/variables.sh
         workingDirectory: '$(System.ArtifactsDirectory)'
         displayName: 'Run script to reload variables'
+      - task: NuGetToolInstaller@0
+        displayName: 'Use NuGet 4.9.2'
+        inputs:
+          versionSpec: 4.9.2
+      - task: NuGetCommand@2
+        displayName: 'NuGet restore'
+        inputs:
+          restoreSolution: '**\*.sln'
       - task: XamariniOS@2
         displayName: 'Build Xamarin.iOS solution **/*.sln'
         inputs:
