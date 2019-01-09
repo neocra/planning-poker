@@ -78,6 +78,6 @@ jobs:
       - task: XamariniOS@2
         displayName: 'Build Xamarin.iOS solution **/*.sln'
         inputs:
-          solutionFile: 'Game.Planning.Poker.Mobile.iOS/Game.Planning.Poker.Mobile.iOS.csproj'
+          solutionFile: '**/*.sln'
           clean: true
           buildForSimulator: false
