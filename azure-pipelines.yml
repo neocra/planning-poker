@@ -88,6 +88,5 @@ jobs:
           solutionFile: '**/*.sln'
           clean: true
           signingIdentity: 'iPhone Distribution: Aurélien GALTIER (UTWUFNBJ94)'
-          signingProvisioningProfileID: 87c31047-60ff-4e9b-b172-72a31df82a28
-          args: '-v -v -v -v'
+          signingProvisioningProfileID: 87c31047-60ff-4e9b-b172-72a31df82a28        
           buildForSimulator: false
