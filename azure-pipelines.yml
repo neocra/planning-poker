@@ -80,4 +80,6 @@ jobs:
         inputs:
           solutionFile: '**/*.sln'
           clean: true
+          signingIdentity: Aurelien GALTIER (AU445QBBJ9)
+          signingProvisioningProfileID: 87c31047-60ff-4e9b-b172-72a31df82a28
           buildForSimulator: false
