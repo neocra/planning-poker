@@ -95,6 +95,12 @@ jobs:
           Contents: '**/*.ipa'
           TargetFolder: '$(build.artifactstagingdirectory)/ios/'
           flattenFolders: true
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)/ios/'
+        inputs:
+          Contents: 'WhatToTest.txt'
+          TargetFolder: '$(build.artifactstagingdirectory)/ios/'
+          flattenFolders: true
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact iOS'
         inputs:
