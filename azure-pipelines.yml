@@ -73,7 +73,6 @@ jobs:
     
           sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_16_0
         displayName: 'Select Xamarin SDK version'
-        enabled: false
       - task: NuGetToolInstaller@0
         displayName: 'Use NuGet 4.9.2'
         inputs:
