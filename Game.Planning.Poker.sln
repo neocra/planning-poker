@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Planning.Poker.Mobile"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Planning.Poker.Mobile.iOS", "Game.Planning.Poker.Mobile.iOS\Game.Planning.Poker.Mobile.iOS.csproj", "{C01C6ACF-800F-42FF-A322-39BB5BDF4359}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Planning.Poker.Mobile.Droid", "Game.Planning.Poker.Mobile.Droid\Game.Planning.Poker.Mobile.Droid.csproj", "{B294D24F-8365-4CF0-A922-2924A0CFDECD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,5 +57,15 @@ Global
 		{C01C6ACF-800F-42FF-A322-39BB5BDF4359}.Release|API.ActiveCfg = Release|iPhone
 		{C01C6ACF-800F-42FF-A322-39BB5BDF4359}.Release|iPhone.ActiveCfg = Release|iPhone
 		{C01C6ACF-800F-42FF-A322-39BB5BDF4359}.Release|iPhone.Build.0 = Release|iPhone
+		{B294D24F-8365-4CF0-A922-2924A0CFDECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B294D24F-8365-4CF0-A922-2924A0CFDECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B294D24F-8365-4CF0-A922-2924A0CFDECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B294D24F-8365-4CF0-A922-2924A0CFDECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B294D24F-8365-4CF0-A922-2924A0CFDECD}.Release|API.ActiveCfg = Release|Any CPU
+		{B294D24F-8365-4CF0-A922-2924A0CFDECD}.Release|API.Build.0 = Release|Any CPU
+		{B294D24F-8365-4CF0-A922-2924A0CFDECD}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{B294D24F-8365-4CF0-A922-2924A0CFDECD}.Release|iPhone.Build.0 = Release|Any CPU
+		{B294D24F-8365-4CF0-A922-2924A0CFDECD}.DebugSim|Any CPU.ActiveCfg = Debug|Any CPU
+		{B294D24F-8365-4CF0-A922-2924A0CFDECD}.DebugSim|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal
