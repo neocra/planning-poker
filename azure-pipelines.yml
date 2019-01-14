@@ -129,5 +129,5 @@ jobs:
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact droid'
         inputs:
-          ArtifactName: iOS
+          ArtifactName: droid
           PathtoPublish: '$(build.artifactstagingdirectory)/droid/'
