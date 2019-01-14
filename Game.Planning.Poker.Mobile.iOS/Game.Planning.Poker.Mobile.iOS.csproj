@@ -46,7 +46,7 @@
     <ConsolePause>false</ConsolePause>
     <MtouchArch>ARM64</MtouchArch>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: Aurelien GALTIER (AU445QBBJ9)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchExtraArgs>-v -v -v -v</MtouchExtraArgs>
   </PropertyGroup>
@@ -57,9 +57,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <MtouchArch>ARMv7, ARM64</MtouchArch>
+    <MtouchArch>ARM64</MtouchArch>
     <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchExtraArgs>-v -v -v -v</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <DebugType>none</DebugType>
@@ -196,12 +197,33 @@
       <Name>Game.Planning.Poker.Mobile</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-40.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-58.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-87.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-80.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-120.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-180.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-152.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-167.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-1024.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-48.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-55.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-88.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-100.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-172.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-196.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-16.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-32.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-64.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-128.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-256.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-512.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Xamarin.Forms.4.0.0.8055-pre1\build\Xamarin.Forms.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.4.0.0.8055-pre1\build\Xamarin.Forms.props'))" />
-    <Error Condition="!Exists('..\packages\Xamarin.Forms.4.0.0.8055-pre1\build\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.4.0.0.8055-pre1\build\Xamarin.Forms.targets'))" />
-  </Target>
 </Project>

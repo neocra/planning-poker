@@ -1,0 +1,113 @@
+jobs:
+  - job: Windows
+    pool: Hosted VS2017
+    steps:
+      - task: gittools.gitversion.gitversion-task.GitVersion@3
+        displayName: GitVersion
+        inputs:
+          updateAssemblyInfo: true
+      - task: NuGetToolInstaller@0
+        displayName: 'Use NuGet 4.9.2'
+        inputs:
+          versionSpec: 4.9.2
+      - task: NuGetCommand@2
+        displayName: 'NuGet restore'
+        inputs:
+          restoreSolution: '**\*.sln'
+      - task: VSBuild@1
+        displayName: 'Build solution **\*.sln'
+        inputs:
+          platform: 'API'
+          configuration: 'Release'
+          msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="package\WebApp.zip"'
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)/web/'
+        inputs:
+          Contents: '**/Game.Planning.Poker/package/WebApp.zip'
+          TargetFolder: '$(build.artifactstagingdirectory)/web/'
+          flattenFolders: true
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact API'
+        inputs:
+          ArtifactName: API
+          PathtoPublish: '$(build.artifactstagingdirectory)/web/'
+      - script: |
+          echo GitVersion.NuGetVersionV2:%GitVersion.NuGetVersionV2%
+          echo GitVersion.MajorMinorPatch:%GitVersion.MajorMinorPatch%
+          echo GitVersion.AssemblySemVer:%GitVersion.AssemblySemVer%
+          echo #!/bin/bash >variables.sh
+          echo echo "##vso[task.setvariable variable=GitVersion.NuGetVersionV2]%GitVersion.NuGetVersionV2%">>variables.sh
+          echo echo "##vso[task.setvariable variable=GitVersion.MajorMinorPatch]%GitVersion.MajorMinorPatch%">>variables.sh
+          echo echo "##vso[task.setvariable variable=GitVersion.AssemblySemVer]%GitVersion.AssemblySemVer%">>variables.sh
+        workingDirectory: '$(Build.ArtifactStagingDirectory)'
+        displayName: 'Save variables to scripts'
+        env:
+          GitVersion.NuGetVersionV2: $(GitVersion.NuGetVersionV2)
+          GitVersion.MajorMinorPatch: $(GitVersion.MajorMinorPatch)
+          GitVersion.AssemblySemVer: $(GitVersion.AssemblySemVer)
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: drop'
+
+  - job: MacOS
+    dependsOn: Windows
+    pool: Hosted macOS
+    steps:
+      - task: InstallAppleCertificate@2
+        displayName: 'Install an Apple certificate'
+        inputs:
+          certSecureFile: '53a1d7c8-2775-4d0a-8f66-828d6b16efbd'
+      - task: InstallAppleProvisioningProfile@1
+        displayName: 'Install an Apple provisioning profile'
+        inputs:
+          provProfileSecureFile: 'bf056c90-682e-4a89-9936-a2dfce50ad04'
+      - task: DownloadBuildArtifacts@0
+        displayName: 'Download Build Artifacts'
+        inputs:
+          artifactName: drop
+      - script: /bin/bash drop/variables.sh
+        workingDirectory: '$(System.ArtifactsDirectory)'
+        displayName: 'Run script to reload variables'
+      - bash: |
+          # To manually select a Xamarin SDK version on the Hosted macOS agent, run this script with the SDK version you want to target
+          # https://go.microsoft.com/fwlink/?linkid=871629 
+    
+          sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_16_0_0
+        displayName: 'Select Xamarin SDK version'
+      - task: vs-publisher-473885.motz-mobile-buildtasks.ios-bundle-version.ios-bundle-version@1
+        displayName: 'Bump iOS Versions in Game.Planning.Poker.Mobile.iOS/Info.plist'
+        inputs:
+          sourcePath: Game.Planning.Poker.Mobile.iOS/Info.plist    
+          versionName: '$(GitVersion.MajorMinorPatch)'
+      - task: NuGetToolInstaller@0
+        displayName: 'Use NuGet 4.9.2'
+        inputs:
+          versionSpec: 4.9.2
+      - task: NuGetCommand@2
+        displayName: 'NuGet restore'
+        inputs:
+          restoreSolution: '**/*.sln'
+      - task: XamariniOS@2
+        displayName: 'Build Xamarin.iOS solution **/*.sln'
+        inputs:
+          solutionFile: '**/*.sln'
+          clean: true
+          signingIdentity: 'iPhone Distribution: Aurélien GALTIER (UTWUFNBJ94)'
+          signingProvisioningProfileID: 87c31047-60ff-4e9b-b172-72a31df82a28        
+          buildForSimulator: false
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)/ios/'
+        inputs:
+          Contents: '**/*.ipa'
+          TargetFolder: '$(build.artifactstagingdirectory)/ios/'
+          flattenFolders: true
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)/ios/'
+        inputs:
+          Contents: 'WhatToTest.txt'
+          TargetFolder: '$(build.artifactstagingdirectory)/ios/'
+          flattenFolders: true
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact iOS'
+        inputs:
+          ArtifactName: iOS
+          PathtoPublish: '$(build.artifactstagingdirectory)/ios/'

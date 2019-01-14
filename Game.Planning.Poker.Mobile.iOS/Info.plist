@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Game.Planning.Poker.Mobile.iOS</string>
+	<string>Planning Poker</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.companyname.Game.Planning.Poker.Mobile.iOS</string>
+	<string>com.trollcorp.pokerplanning</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -32,8 +32,12 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>CFBundleName</key>
-	<string>Game.Planning.Poker.Mobile.iOS</string>
+	<string>Planning Poker</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Can we use your camera</string>
+	<key>UIRequiresFullScreen</key>
+	<true/>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/AppIcon.appiconset</string>
 </dict>
 </plist>

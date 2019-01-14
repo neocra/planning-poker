@@ -21,8 +21,9 @@ namespace Game.Planning.Poker.Mobile.Domain
         public GameConnection()
         {
             this.connection = new HubConnectionBuilder()
-//                .WithUrl("http://10.1.1.97:5000/pokerhub")
-                .WithUrl("http://10.10.1.36:5000/pokerhub")
+                //                .WithUrl("http://10.1.1.97:5000/pokerhub")
+                //.WithUrl("http://10.10.1.36:5000/pokerhub")
+                .WithUrl("https://poker-planning.azurewebsites.net/pokerhub")
                 .Build();
 
             this.connection.Closed += async (error) =>
