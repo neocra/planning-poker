@@ -78,6 +78,11 @@ jobs:
         inputs:
           sourcePath: Game.Planning.Poker.Mobile.iOS/Info.plist    
           versionName: '$(GitVersion.MajorMinorPatch)'
+      - task: vs-publisher-473885.motz-mobile-buildtasks.android-manifest-version.android-manifest-version@1
+        displayName: 'Bump Android Versions in Game.Planning.Poker.Mobile.Droid/Properties/AndroidManifest.xml'
+        inputs:
+          sourcePath: Game.Planning.Poker.Mobile.Droid/Properties/AndroidManifest.xml
+          versionName: '$(GitVersion.MajorMinorPatch)'
       - task: NuGetToolInstaller@0
         displayName: 'Use NuGet 4.9.2'
         inputs:
@@ -94,6 +99,10 @@ jobs:
           signingIdentity: 'iPhone Distribution: Aurélien GALTIER (UTWUFNBJ94)'
           signingProvisioningProfileID: 87c31047-60ff-4e9b-b172-72a31df82a28        
           buildForSimulator: false
+      - task: XamarinAndroid@1
+        displayName: 'Build Xamarin.Android project Game.Planning.Poker.Mobile.Droid/Game.Planning.Poker.Mobile.Droid.csproj'
+        inputs:
+          projectFile: Game.Planning.Poker.Mobile.Droid/Game.Planning.Poker.Mobile.Droid.csproj
       - task: CopyFiles@2
         displayName: 'Copy Files to: $(build.artifactstagingdirectory)/ios/'
         inputs:
@@ -106,8 +115,19 @@ jobs:
           Contents: 'WhatToTest.txt'
           TargetFolder: '$(build.artifactstagingdirectory)/ios/'
           flattenFolders: true
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)/droid/'
+        inputs:
+          Contents: '**/*.apk'
+          TargetFolder: '$(build.artifactstagingdirectory)/droid/'
+          flattenFolders: true
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact iOS'
         inputs:
           ArtifactName: iOS
           PathtoPublish: '$(build.artifactstagingdirectory)/ios/'
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact droid'
+        inputs:
+          ArtifactName: iOS
+          PathtoPublish: '$(build.artifactstagingdirectory)/droid/'
