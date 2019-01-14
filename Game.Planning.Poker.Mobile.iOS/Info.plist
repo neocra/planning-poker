@@ -35,5 +35,7 @@
 	<string>Planning Poker</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Can we use your camera</string>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 </dict>
 </plist>
