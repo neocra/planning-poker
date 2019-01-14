@@ -73,6 +73,11 @@ jobs:
     
           sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_16_0_0
         displayName: 'Select Xamarin SDK version'
+      - task: vs-publisher-473885.motz-mobile-buildtasks.ios-bundle-version.ios-bundle-version@1
+        displayName: 'Bump iOS Versions in Game.Planning.Poker.Mobile.iOS/Info.plist'
+        inputs:
+          sourcePath: Game.Planning.Poker.Mobile.iOS/Info.plist    
+          versionName: '$(GitVersion.MajorMinorPatch)'
       - task: NuGetToolInstaller@0
         displayName: 'Use NuGet 4.9.2'
         inputs:
