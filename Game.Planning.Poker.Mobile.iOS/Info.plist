@@ -37,5 +37,7 @@
 	<string>Can we use your camera</string>
 	<key>UIRequiresFullScreen</key>
 	<true/>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/AppIcon.appiconset</string>
 </dict>
 </plist>
