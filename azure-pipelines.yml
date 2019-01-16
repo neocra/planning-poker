@@ -103,6 +103,7 @@ jobs:
         displayName: 'Build Xamarin.Android project Game.Planning.Poker.Mobile.Droid/Game.Planning.Poker.Mobile.Droid.csproj'
         inputs:
           projectFile: Game.Planning.Poker.Mobile.Droid/Game.Planning.Poker.Mobile.Droid.csproj
+          configuration: 'Release'
       - task: CopyFiles@2
         displayName: 'Copy Files to: $(build.artifactstagingdirectory)/ios/'
         inputs:
