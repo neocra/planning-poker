@@ -15,7 +15,7 @@ namespace Game.Planning.Poker.Mobile.Domain
         private Func<Player, Task> newPlayer;
         private Func<Task> startTurn;
         private Func<Task> displayCallback;
-        private Func<Player, int, Task> newVote;
+        private Func<Player, double, Task> newVote;
         private string gameCode;
 
         public GameConnection()
@@ -43,7 +43,7 @@ namespace Game.Planning.Poker.Mobile.Domain
                 Device.BeginInvokeOnMainThread(() => this.newPlayer(player).Fire());
             });
             
-            this.connection.On<PlayerDto, int>("Vote", (playerDto, vote) =>
+            this.connection.On<PlayerDto, double>("Vote", (playerDto, vote) =>
             {
                 var player = new Player
                 {
@@ -99,7 +99,7 @@ namespace Game.Planning.Poker.Mobile.Domain
             await this.connection.InvokeAsync("Vote", this.gameCode, player, vote);
         }
                 
-        public void CallbackVote(Func<Player, int, Task> newVote)
+        public void CallbackVote(Func<Player, double, Task> newVote)
         {
             this.newVote = newVote;
         }

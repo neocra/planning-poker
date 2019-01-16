@@ -15,7 +15,7 @@ using ZXing.Mobile;
 
 namespace Game.Planning.Poker.Mobile.Droid
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/MainTheme", MainLauncher = true)]
     public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
