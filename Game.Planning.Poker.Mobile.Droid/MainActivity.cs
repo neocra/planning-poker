@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Runtime;
@@ -33,6 +34,11 @@ namespace Game.Planning.Poker.Mobile.Droid
         private void LoadKernel(IKernel obj)
         {
             obj.Bind<IQrCodeScan>().ToMethod(() => new QrCodeScan(this));
+        }
+        
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            global::ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult (requestCode, permissions, grantResults);           
         }
     }
 
