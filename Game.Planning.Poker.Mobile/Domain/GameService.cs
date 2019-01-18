@@ -167,7 +167,7 @@ namespace Game.Planning.Poker.Mobile.Domain
             return Task.CompletedTask;
         }
 
-        private async Task InternalVote(Player player, int vote)
+        private async Task InternalVote(Player player, double vote)
         {
             await this.Vote(player, vote);
             
