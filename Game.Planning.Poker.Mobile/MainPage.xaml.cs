@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Pattern.Tasks;
 using SkiaSharp;
 using SkiaSharp.Views.Forms;
-using Xamarin.Essentials.Interfaces;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Game.Planning.Poker.Mobile
@@ -132,6 +132,11 @@ namespace Game.Planning.Poker.Mobile
 
             canvas.DrawPath(pathHeart, paintCard);
         }
+    }
+
+    public interface IDeviceDisplay
+    {
+        DisplayInfo MainDisplayInfo { get; }
     }
 
     public static class Animatable
