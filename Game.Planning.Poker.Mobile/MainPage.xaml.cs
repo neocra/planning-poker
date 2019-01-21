@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Game.Planning.Poker.Mobile.Infrastructure;
 using Pattern.Tasks;
 using SkiaSharp;
 using SkiaSharp.Views.Forms;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Game.Planning.Poker.Mobile
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPage : ContentPage, INavigateFrom
     {
         private readonly IDeviceDisplay deviceDisplay;
 
@@ -17,7 +17,7 @@ namespace Game.Planning.Poker.Mobile
             this.deviceDisplay = deviceDisplay;
             this.InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            this.Appearing+=OnAppearing;
+            this.Appearing += this.OnAppearing;
         }
 
         private void OnAppearing(object sender, EventArgs e)
@@ -39,14 +39,14 @@ namespace Game.Planning.Poker.Mobile
             var start = this.deviceDisplay.MainDisplayInfo.Height / this.deviceDisplay.MainDisplayInfo.Density;
             var end = (this.deviceDisplay.MainDisplayInfo.Height / this.deviceDisplay.MainDisplayInfo.Density) / 2.0;
             await Task.WhenAll(
-                this.TopGrid.AnimateAsync(d => this.TopGrid.HeightRequest = d, start, end),
+                this.TopGrid.AnimateAsync(d => this.TopGrid.HeightRequest = d, start, end, 1500),
                 this.AnimateFade(),
                 this.AnimateLogo());
         }
-
+        
         private async Task AnimateFade()
         {
-            await Task.Delay(1000);
+            await Task.Delay(1400);
             await this.GridUserName.FadeTo(1.0, easing: Easing.CubicIn);
         }
         
@@ -132,27 +132,13 @@ namespace Game.Planning.Poker.Mobile
 
             canvas.DrawPath(pathHeart, paintCard);
         }
-    }
 
-    public interface IDeviceDisplay
-    {
-        DisplayInfo MainDisplayInfo { get; }
-    }
-
-    public static class Animatable
-    {
-        public static Task AnimateAsync(this IAnimatable animatable, Action<double> callback, double start, double end)
+        public Task NavigateFrom(Type toPage)
         {
-            var taskSource = new TaskCompletionSource<bool>();
-            animatable.Animate(
-                "GridHeight",
-                callback,
-                start,
-                end,
-                easing: Easing.CubicIn,
-                length: 1500,
-                finished: (d, b) => taskSource.SetResult(true));
-            return taskSource.Task;
+            return Task.WhenAll(
+                this.GridUserName.FadeTo(0),
+                this.Logo.FadeTo(0),
+                this.TopGrid.AnimateAsync(d => this.TopGrid.HeightRequest = d, this.TopGrid.Height, this.Height, 500));
         }
     }
 }

@@ -1,7 +1,7 @@
+using Game.Planning.Poker.Mobile.Infrastructure;
 using Pattern.Config;
 using Pattern.Core.Interfaces;
 using Pattern.Module;
-using Xamarin.Essentials;
 
 namespace Game.Planning.Poker.Mobile.Domain
 {
@@ -11,10 +11,5 @@ namespace Game.Planning.Poker.Mobile.Domain
         {
             kernel.Bind<IDeviceDisplay>().To<DeviceDisplayImplementation>();
         }
-    }
-
-    public class DeviceDisplayImplementation : IDeviceDisplay
-    {
-        public DisplayInfo MainDisplayInfo => DeviceDisplay.MainDisplayInfo;
     }
 }
