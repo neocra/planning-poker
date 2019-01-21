@@ -26,7 +26,7 @@ namespace Game.Planning.Poker.Mobile
             //this.gameService.SetPlayer(new Player { Name = "Kiril", Id = Guid.NewGuid() });
             //await this.navigationService.Navigate(typeof(ScorePage));
 
-            await this.navigationService.Navigate(typeof(MainPage));
+            await this.navigationService.NavigateRoot(typeof(MainPage));
         }
     }
 }

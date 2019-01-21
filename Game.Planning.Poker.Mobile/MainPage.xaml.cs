@@ -1,18 +1,61 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Pattern.Tasks;
 using SkiaSharp;
 using SkiaSharp.Views.Forms;
+using Xamarin.Essentials.Interfaces;
 using Xamarin.Forms;
 
 namespace Game.Planning.Poker.Mobile
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage()
+        private readonly IDeviceDisplay deviceDisplay;
+
+        public MainPage(IDeviceDisplay deviceDisplay)
         {
+            this.deviceDisplay = deviceDisplay;
             this.InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
+            this.Appearing+=OnAppearing;
         }
 
+        private void OnAppearing(object sender, EventArgs e)
+        {
+            this.Open().Fire();
+        }
+
+        private bool firstLoad = true;
+
+        private async Task Open()
+        {
+            if (!this.firstLoad)
+            {
+                return;
+            }
+
+            this.firstLoad = false;
+             
+            var start = this.deviceDisplay.MainDisplayInfo.Height / this.deviceDisplay.MainDisplayInfo.Density;
+            var end = (this.deviceDisplay.MainDisplayInfo.Height / this.deviceDisplay.MainDisplayInfo.Density) / 2.0;
+            await Task.WhenAll(
+                this.TopGrid.AnimateAsync(d => this.TopGrid.HeightRequest = d, start, end),
+                this.AnimateFade(),
+                this.AnimateLogo());
+        }
+
+        private async Task AnimateFade()
+        {
+            await Task.Delay(1000);
+            await this.GridUserName.FadeTo(1.0, easing: Easing.CubicIn);
+        }
+        
+        private async Task AnimateLogo()
+        {
+            await Task.Delay(1250);
+            this.Logo.Play();
+        }
+        
         private void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
         {
             SKImageInfo info = args.Info;
@@ -26,14 +69,14 @@ namespace Game.Planning.Poker.Mobile
             SKPaint paint = new SKPaint
             {
                 Style = SKPaintStyle.Fill,
-                Color = Color.Black.ToSKColor(),
+                Color = Color.White.ToSKColor(),
                 StrokeWidth = 0,
                 TextSize = fontSize
             };
             SKPaint paintRed = new SKPaint
             {
                 Style = SKPaintStyle.Fill,
-                Color = Color.Red.ToSKColor(),
+                Color = Color.FromHex("#2e3645").ToSKColor(),
                 StrokeWidth = 1
             };
 
@@ -88,6 +131,23 @@ namespace Game.Planning.Poker.Mobile
             pathHeart.Offset(xOffset, yOffset);
 
             canvas.DrawPath(pathHeart, paintCard);
+        }
+    }
+
+    public static class Animatable
+    {
+        public static Task AnimateAsync(this IAnimatable animatable, Action<double> callback, double start, double end)
+        {
+            var taskSource = new TaskCompletionSource<bool>();
+            animatable.Animate(
+                "GridHeight",
+                callback,
+                start,
+                end,
+                easing: Easing.CubicIn,
+                length: 1500,
+                finished: (d, b) => taskSource.SetResult(true));
+            return taskSource.Task;
         }
     }
 }
