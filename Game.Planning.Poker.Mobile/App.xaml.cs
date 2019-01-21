@@ -1,6 +1,9 @@
 ﻿using System;
 using Game.Planning.Poker.Mobile.Domain;
 using Game.Planning.Poker.Mobile.Infrastructure;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Pattern.Core;
 using Pattern.Core.Interfaces;
 using Pattern.Module;
@@ -20,6 +23,9 @@ namespace Game.Planning.Poker.Mobile
 
         public App(Action<IKernel> configKernel)
         {
+            AppCenter.Start("ios=4c5e3d2f-0bde-44ea-96dc-f75b6c992156;" +
+                              "android=794f9ea1-ac36-45f4-93c5-f1f19ef4ddae",
+                              typeof(Analytics), typeof(Crashes));
             this.InitializeComponent();
 
             new ErrorHandler().UseDefault();

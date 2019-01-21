@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using Microsoft.AppCenter.Crashes;
 using Pattern.Tasks;
 
 namespace Game.Planning.Poker.Mobile.Infrastructure
@@ -8,7 +9,7 @@ namespace Game.Planning.Poker.Mobile.Infrastructure
     {
         public void Handle(Exception ex)
         {
-            Debug.WriteLine(ex);
+            Crashes.TrackError(ex);
         }
     }
 }
