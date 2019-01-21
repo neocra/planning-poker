@@ -2,22 +2,45 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+             xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="Game.Planning.Poker.Mobile.MainPage">
 
-    <Grid BackgroundColor="#FFFFFF" RowSpacing="0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="400" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid BackgroundColor="#eaeef5" RowSpacing="0">
+        <Grid BackgroundColor="#324250" x:Name="TopGrid" VerticalOptions="StartAndExpand">
+            <lottie:AnimationView  x:Name="Logo"
+                Animation="logo.json"
+                IsPlaying="False"
+                Loop="False"
+                AutoPlay="False"
+                WidthRequest="250"
+                HeightRequest="250"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"  />
 
-        <skia:SKCanvasView PaintSurface="OnCanvasViewPaintSurface" 
-                           VerticalOptions="FillAndExpand" 
-                           HorizontalOptions="FillAndExpand">
-        </skia:SKCanvasView>
-        
-        <Entry Grid.Row="1" Margin="10" VerticalOptions="End" Text="{Binding FullName}" Placeholder="What your name ?" />
+        </Grid>
+                
+        <Grid VerticalOptions="Center" HorizontalOptions="FillAndExpand" Margin="20" x:Name="GridUserName" Opacity="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <BoxView CornerRadius="10" BackgroundColor="#FFFFFF" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                
+            </BoxView>
+            <Entry Grid.Row="0" 
+                   Margin="20,20,20,10" 
+                   VerticalOptions="CenterAndExpand" 
+                   Text="{Binding FullName}" 
+                   Placeholder="What your name ?" 
+                   HorizontalTextAlignment="Center" />
  
-        <Button Margin="10" VerticalOptions="Start" Grid.Row="2" Text="Ok" Command="{Binding UpdateCommand}" />
+            <Button Grid.Row="1" 
+                    Margin="10,0,10,10" 
+                    VerticalOptions="CenterAndExpand" 
+                    Text="Ok"  
+                    TextColor="#324250" 
+                    BackgroundColor="#FFFFFF"
+                    Command="{Binding UpdateCommand}" />            
+        </Grid>
     </Grid>
 </ContentPage>

@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using Game.Planning.Poker.Mobile.Infrastructure;
+using Lottie.Forms.iOS.Renderers;
 using Pattern.Config;
 using Pattern.Core.Interfaces;
 using UIKit;
@@ -22,7 +23,8 @@ namespace Game.Planning.Poker.Mobile.iOS
 
             Forms.SetFlags("CollectionView_Experimental");
             Xamarin.Forms.Forms.Init();
-
+            AnimationViewRenderer.Init();
+            
             this.LoadApplication(new App(this.LoadKernel));
 
             return base.FinishedLaunching(application, launchOptions);

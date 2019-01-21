@@ -8,6 +8,7 @@ using Android.Support.V7.App;
 using Android.Runtime;
 using Android.Widget;
 using Game.Planning.Poker.Mobile.Infrastructure;
+using Lottie.Forms.Droid;
 using Pattern.Core.Interfaces;
 using Xamarin.Forms;
 using Pattern.Config;
@@ -27,6 +28,7 @@ namespace Game.Planning.Poker.Mobile.Droid
             Forms.SetFlags("CollectionView_Experimental");
 
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            AnimationViewRenderer.Init();
 
             this.LoadApplication(new App(this.LoadKernel));
         }
