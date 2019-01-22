@@ -3,12 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Game.Planning.Poker.Mobile.JoinPage">
 
-    <Grid BackgroundColor="#FFFFFF" RowSpacing="0">
+    <Grid BackgroundColor="#eaeef5" RowSpacing="0">
         <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Text="Create" Command="{Binding CreateCommand}" />
-        <Button Grid.Row="1" Text="Scan" Command="{Binding ScanCommand}" />
+        <Button Grid.Row="1" x:Name="Create"
+                VerticalOptions="Center" 
+                Text="Create a new game" Margin="20,20,20,10" 
+                Command="{Binding CreateCommand}" 
+                BackgroundColor="#ffaa08" 
+                TextColor="#FFFFFF"
+                FontAttributes="Bold" />
+        <Button Grid.Row="2" x:Name="Scan"
+                VerticalOptions="Center"
+                Text="Scan and join game"
+                Margin="20,10,20,70"
+                Command="{Binding ScanCommand}"
+                BackgroundColor="#ffaa08"
+                TextColor="#FFFFFF"
+                FontAttributes="Bold" />
+
+        <Grid Grid.Row="0" BackgroundColor="#324250" Grid.RowSpan="3" x:Name="TopGrid" VerticalOptions="StartAndExpand">
+            <Label x:Name="Label"
+                VerticalTextAlignment="Center" 
+                HorizontalTextAlignment="Center" 
+                TextColor="#FFFFFF" 
+                Margin="40"
+                FontAttributes="Bold"
+                Text="First player create a new poker planning game. The others scan QR-Code to join this game." />
+        </Grid>
     </Grid>
 </ContentPage>
