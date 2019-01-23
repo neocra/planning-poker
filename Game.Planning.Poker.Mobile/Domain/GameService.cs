@@ -161,7 +161,10 @@ namespace Game.Planning.Poker.Mobile.Domain
 
             if (this.scorePlayers.All(s => s.Score != null))
             {
-                return this.Display();
+                foreach (var scorePlayer in this.scorePlayers)
+                {
+                    scorePlayer.Show = true;
+                }                
             }
 
             return Task.CompletedTask;

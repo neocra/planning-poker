@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="Game.Planning.Poker.Mobile.JoinPage">
 
     <Grid BackgroundColor="#eaeef5" RowSpacing="0">
@@ -15,7 +16,8 @@
                 Command="{Binding CreateCommand}" 
                 BackgroundColor="#ffaa08" 
                 TextColor="#FFFFFF"
-                FontAttributes="Bold" />
+                FontAttributes="Bold"
+                CornerRadius="0" />
         <Button Grid.Row="2" x:Name="Scan"
                 VerticalOptions="Center"
                 Text="Scan and join game"
@@ -23,16 +25,29 @@
                 Command="{Binding ScanCommand}"
                 BackgroundColor="#ffaa08"
                 TextColor="#FFFFFF"
-                FontAttributes="Bold" />
+                FontAttributes="Bold"
+                CornerRadius="0" />
 
         <Grid Grid.Row="0" BackgroundColor="#324250" Grid.RowSpan="3" x:Name="TopGrid" VerticalOptions="StartAndExpand">
             <Label x:Name="Label"
                 VerticalTextAlignment="Center" 
                 HorizontalTextAlignment="Center" 
                 TextColor="#FFFFFF" 
-                Margin="40"
+                Margin="40" Opacity="0"
                 FontAttributes="Bold"
                 Text="First player create a new poker planning game. The others scan QR-Code to join this game." />
+        </Grid>
+        <Grid BackgroundColor="#324250" IsVisible="{Binding IsLoading}" Grid.RowSpan="3">
+            <lottie:AnimationView  x:Name="Logo"
+                                   Animation="logo.json"
+                                   IsPlaying="True"
+                                   Loop="False"
+                                   AutoPlay="True"
+                                   WidthRequest="250"
+                                   HeightRequest="250"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                    OnFinish="Logo_OnOnFinish" />
         </Grid>
     </Grid>
 </ContentPage>

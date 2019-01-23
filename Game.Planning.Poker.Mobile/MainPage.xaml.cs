@@ -22,6 +22,7 @@ namespace Game.Planning.Poker.Mobile
 
         private void OnAppearing(object sender, EventArgs e)
         {
+            this.TopGrid.HeightRequest = this.deviceDisplay.MainDisplayInfo.Height / this.deviceDisplay.MainDisplayInfo.Density;
             this.Open().Fire();
         }
 

@@ -3,31 +3,63 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:common="clr-namespace:ZXing.Common;assembly=zxing.portable"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             
              x:Class="Game.Planning.Poker.Mobile.CreateNewPage">
 
-    <Grid BackgroundColor="#FFFFFF" RowSpacing="0">
+    <Grid BackgroundColor="#eaeef5" RowSpacing="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="300" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <zxing:ZXingBarcodeImageView 
-            HeightRequest="300" 
-            WidthRequest="300" 
-            Grid.Row="0" 
-            BarcodeFormat="QR_CODE"
-            BarcodeValue="{Binding BareCodeValue}">
-            <zxing:ZXingBarcodeImageView.BarcodeOptions>
-                <common:EncodingOptions Width="1000" Height="1000" />
-            </zxing:ZXingBarcodeImageView.BarcodeOptions>
-        </zxing:ZXingBarcodeImageView>
+        <Grid Grid.Row="0" BackgroundColor="#324250" x:Name="TopGrid" VerticalOptions="StartAndExpand">
+            <zxing:ZXingBarcodeImageView 
+                Margin="20,60,20,20"
+                HeightRequest="300" 
+                WidthRequest="300" 
+                BarcodeFormat="QR_CODE"
+                BarcodeValue="{Binding BareCodeValue}">
+                <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                    <common:EncodingOptions Width="1000" Height="1000" />
+                </zxing:ZXingBarcodeImageView.BarcodeOptions>
+            </zxing:ZXingBarcodeImageView>
+        </Grid>
+       
+        <Button 
+            Text="Start Game" 
+            Grid.Row="1" 
+            Command="{Binding StartCommand}"
+            BackgroundColor="#ffaa08"
+            TextColor="#FFFFFF"
+            Margin="20,20,20,10"
+            FontAttributes="Bold"
+            CornerRadius="0" />
         
-        <Button Text="Start" Grid.Row="1" Command="{Binding StartCommand}" />
-        
-        <ListView Grid.Row="2" ItemsSource="{Binding Players}">
+        <ListView Grid.Row="2"
+                  ItemsSource="{Binding Players}"
+                  Margin="20,10"
+                  SeparatorVisibility="None"
+                  BackgroundColor="#eaeef5"
+                  ItemAppearing="ListView_OnItemAppearing"
+                  RowHeight="42"
+                   >
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}" />
+                    <ViewCell Appearing="Cell_OnAppearing">
+                        <Grid>                            
+                            <Grid VerticalOptions="Start">
+                                <BoxView BackgroundColor="#FFFFFF" Margin="2" />
+                                <Label Text="{Binding Name}" 
+                                       Margin="20,0"
+                                       VerticalOptions="Center" 
+                                       HorizontalOptions="Start"
+                                       TextColor="#324250"
+                                       Opacity="0"
+                                       FontAttributes="Bold" />                            
+                            </Grid>
+                        </Grid>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
