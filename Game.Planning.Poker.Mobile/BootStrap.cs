@@ -18,13 +18,13 @@ namespace Game.Planning.Poker.Mobile
 
         public async Task Start()
         {
-            //this.gameService.SetPlayer(new Player { Name = "Toto", Id = Guid.NewGuid() });
-            //this.gameService.SetPlayer(new Player { Name = "Aurélien", Id = Guid.NewGuid() });
-            //this.gameService.SetPlayer(new Player { Name = "Mick", Id = Guid.NewGuid() });
-            //this.gameService.SetPlayer(new Player { Name = "Maxime", Id = Guid.NewGuid() });
-            //this.gameService.SetPlayer(new Player { Name = "Guillaume", Id = Guid.NewGuid() });
-            //this.gameService.SetPlayer(new Player { Name = "Kiril", Id = Guid.NewGuid() });
-            //await this.navigationService.Navigate(typeof(ScorePage));
+//            this.gameService.SetPlayer(new Player { Name = "Toto", Id = Guid.NewGuid() });
+//            this.gameService.SetPlayer(new Player { Name = "Aurélien", Id = Guid.NewGuid() });
+//            this.gameService.SetPlayer(new Player { Name = "Mick", Id = Guid.NewGuid() });
+//            this.gameService.SetPlayer(new Player { Name = "Maxime", Id = Guid.NewGuid() });
+//            this.gameService.SetPlayer(new Player { Name = "Guillaume", Id = Guid.NewGuid() });
+//            this.gameService.SetPlayer(new Player { Name = "Kiril", Id = Guid.NewGuid() });
+//            await this.navigationService.Navigate(typeof(ScorePage));
 
             await this.navigationService.NavigateRoot(typeof(MainPage));
         }

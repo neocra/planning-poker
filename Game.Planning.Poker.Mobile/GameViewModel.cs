@@ -38,7 +38,7 @@ namespace Game.Planning.Poker.Mobile
             set => this.Set(ref this.scores, value);
         }
 
-        public AsyncCommand<Score> VoteCommand => this.CreateCommand<Score>(VoteAsync);
+        public AsyncCommand<Score> VoteCommand => this.CreateCommand<Score>(this.VoteAsync);
 
         private async Task VoteAsync(Score score)
         {

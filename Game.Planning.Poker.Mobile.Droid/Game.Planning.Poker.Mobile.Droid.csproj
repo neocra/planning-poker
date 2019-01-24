@@ -120,6 +120,10 @@
       <Link>Assets\logo.json</Link>
     </AndroidAsset>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Logo.png" />
+    <AndroidResource Include="Resources\drawable\splash_screen.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
       Other similar extension points exist, see Microsoft.Common.targets.
