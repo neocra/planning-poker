@@ -50,12 +50,11 @@
                         <Grid>                            
                             <Grid VerticalOptions="Start">
                                 <BoxView BackgroundColor="#FFFFFF" Margin="2" />
-                                <Label Text="{Binding Name}" 
+                                <Label Text="{Binding Name}"  BindingContextChanged="BindableObject_OnBindingContextChanged"
                                        Margin="20,0"
                                        VerticalOptions="Center" 
                                        HorizontalOptions="Start"
                                        TextColor="#324250"
-                                       Opacity="0"
                                        FontAttributes="Bold" />                            
                             </Grid>
                         </Grid>

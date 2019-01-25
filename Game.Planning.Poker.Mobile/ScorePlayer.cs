@@ -33,5 +33,7 @@ namespace Game.Planning.Poker.Mobile
                 this.RaisePropertyChanged(nameof(this.ShowHasScore));
             }
         }
+
+        public string ConnectionId { get; set; }
     }
 }

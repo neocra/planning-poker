@@ -13,6 +13,7 @@ namespace Game.Planning.Poker.Mobile.Domain
         private readonly HubConnection connection;
 
         private Func<Player, Task> newPlayer;
+        private Func<string, Task> removePlayer;
         private Func<Task> startTurn;
         private Func<Task> displayCallback;
         private Func<Player, double, Task> newVote;
@@ -22,7 +23,7 @@ namespace Game.Planning.Poker.Mobile.Domain
         {
             this.connection = new HubConnectionBuilder()
                 //                .WithUrl("http://10.1.1.97:5000/pokerhub")
-                //.WithUrl("http://10.10.1.36:5000/pokerhub")
+//                .WithUrl("http://10.10.1.36:5000/pokerhub")
                 .WithUrl("https://poker-planning.azurewebsites.net/pokerhub")
                 .Build();
 
@@ -32,12 +33,19 @@ namespace Game.Planning.Poker.Mobile.Domain
                 await this.connection.StartAsync();
             };
 
+            this.connection.On<string>("RemovePlayer", (connectionId) =>
+            {
+                
+                Device.BeginInvokeOnMainThread(() => this.removePlayer(connectionId).Fire());
+            });
+            
             this.connection.On<PlayerDto>("UpdatePlayer", (playerDto) =>
             {
                 var player = new Player
                 {
                     Id = playerDto.Id,
                     Name = playerDto.Name,
+                    ConnectionId = playerDto.ConnectionId
                 };
                 
                 Device.BeginInvokeOnMainThread(() => this.newPlayer(player).Fire());
@@ -49,6 +57,7 @@ namespace Game.Planning.Poker.Mobile.Domain
                 {
                     Id = playerDto.Id,
                     Name = playerDto.Name,
+                    ConnectionId = playerDto.ConnectionId
                 };
                 
                 Device.BeginInvokeOnMainThread(() => this.newVote(player, vote).Fire());
@@ -71,13 +80,19 @@ namespace Game.Planning.Poker.Mobile.Domain
             var playerDto = new PlayerDto
             {
                 Id = player.Id, 
-                Name = player.Name
+                Name = player.Name,
+                ConnectionId = player.ConnectionId
             };
             
             await this.connection.StartAsync();
             await this.connection.InvokeAsync("JoinGame", gameCode, playerDto);
         }
-
+        
+        public void CallbackRemovePlayer(Func<string, Task> removePlayer)
+        {
+            this.removePlayer = removePlayer;
+        }
+        
         public void CallbackUpdatePlayer(Func<Player, Task> newPlayer)
         {
             this.newPlayer = newPlayer;
@@ -88,7 +103,8 @@ namespace Game.Planning.Poker.Mobile.Domain
             var playerDto = new PlayerDto
             {
                 Id = player.Id, 
-                Name = player.Name
+                Name = player.Name,
+                ConnectionId = player.ConnectionId
             };
             
             await this.connection.InvokeAsync("JoinGame", gameCode, playerDto);
@@ -96,7 +112,14 @@ namespace Game.Planning.Poker.Mobile.Domain
 
         public async Task VoteAsync(Player player, double vote)
         {
-            await this.connection.InvokeAsync("Vote", this.gameCode, player, vote);
+            var playerDto = new PlayerDto()
+            {
+                Id = player.Id,
+                Name = player.Name,
+                ConnectionId = player.ConnectionId
+            };
+            
+            await this.connection.InvokeAsync("Vote", this.gameCode, playerDto, vote);
         }
                 
         public void CallbackVote(Func<Player, double, Task> newVote)

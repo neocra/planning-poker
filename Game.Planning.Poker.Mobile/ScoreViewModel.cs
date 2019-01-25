@@ -44,6 +44,12 @@ namespace Game.Planning.Poker.Mobile
 
         public AsyncCommand NextTurnCommand => this.CreateCommand(this.NextTurnAsync);
         public AsyncCommand DisplayCommand => this.CreateCommand(this.DisplayAsync);
+        public AsyncCommand QrCodeCommand => this.CreateCommand(this.QrCodeAsync);
+
+        private Task QrCodeAsync()
+        {
+            return this.navigationService.Navigate(typeof(CreateNewPage), true);
+        }
 
         public ObservableCollection<ScorePlayer> ScorePlayers
         {
@@ -53,14 +59,20 @@ namespace Game.Planning.Poker.Mobile
              
         public override Task InitAsync()
         {                                    
-            this.ScorePlayers.Update(this.gameService.GetPlayers());
-                     
+            var players = this.gameService.GetPlayers();
+            this.ScorePlayers.Update(players);
+            
+            this.UpdateAverrage(players);
+
             return base.InitAsync();
         }
 
         private Task UpdatePlayersCallback()
         {
-            this.ScorePlayers.Update(this.gameService.GetPlayers());
+            var players = this.gameService.GetPlayers();
+            this.ScorePlayers.Update(players);
+
+            this.UpdateAverrage(players);
             return Task.CompletedTask;
         }
 
@@ -71,15 +83,27 @@ namespace Game.Planning.Poker.Mobile
             var players = this.gameService.GetPlayers();
             this.ScorePlayers.Update(players);
 
+            this.UpdateAverrage(players);
+
+            return Task.CompletedTask;
+        }
+
+        private void UpdateAverrage(List<ScorePlayer> players)
+        {
+            if(!players.All(p => p.Show))
+            {
+                return;
+            }
+        
             var scores = players
                 .Where(p => p.Score != null && p.Score.Value != -1)
                 .ToList();
-            
+
             this.Average = scores
                 .Average(s => s.Score.Value);
 
-            var minFibo = this.fibo.Where(p => p<=this.Average).Max();
-            var maxFibo = this.fibo.Where(p => p>=this.Average).Min();
+            var minFibo = this.fibo.Where(p => p <= this.Average).Max();
+            var maxFibo = this.fibo.Where(p => p >= this.Average).Min();
 
             if (this.Average - minFibo < maxFibo - this.Average)
             {
@@ -87,12 +111,10 @@ namespace Game.Planning.Poker.Mobile
             }
             else
             {
-                this.AverageFibo = maxFibo;                
+                this.AverageFibo = maxFibo;
             }
-            
-            return Task.CompletedTask;
         }
-            
+
         private Task DisplayAsync()
         {
             return this.gameService.Display();
