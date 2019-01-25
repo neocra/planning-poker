@@ -29,6 +29,21 @@ namespace Game.Planning.Poker.Mobile.Domain
             this.gameConnection.CallbackUpdatePlayer(this.InternalUpdatePlayer);
             this.gameConnection.CallbackStartTurn(this.InternalStartTurn);
             this.gameConnection.CallbackDisplay(this.InternalDisplayCallback);
+            this.gameConnection.CallbackRemovePlayer(this.InternalRemovePlayerCallback);
+        }
+
+        private Task InternalRemovePlayerCallback(string connectionId)
+        {
+            foreach (var scorePlayer in this.scorePlayers.ToArray())
+            {
+                if (scorePlayer.ConnectionId == connectionId)
+                {
+                    this.scorePlayers.Remove(scorePlayer);
+                    return this.updatePlayers();
+                }
+            }
+            
+            return Task.CompletedTask;
         }
 
         private async Task InternalDisplayCallback()
@@ -99,6 +114,7 @@ namespace Game.Planning.Poker.Mobile.Domain
                 if (playerUpdate.Id == scorePlayer.Id)
                 {
                     scorePlayer.Name = playerUpdate.Name;
+                    scorePlayer.ConnectionId = playerUpdate.ConnectionId;
                     hasSet = true;
                 }
             }
@@ -108,7 +124,8 @@ namespace Game.Planning.Poker.Mobile.Domain
                 this.scorePlayers.Add(new ScorePlayer()
                 {
                     Id = playerUpdate.Id,
-                    Name = playerUpdate.Name
+                    Name = playerUpdate.Name,
+                    ConnectionId = playerUpdate.ConnectionId
                 });
             }
         }

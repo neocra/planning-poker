@@ -25,10 +25,15 @@ namespace Game.Planning.Poker.Mobile
             var descendants = viewCell.Descendants().ToList();
             var grid = descendants.OfType<Grid>().Skip(1).First();
             var label = descendants.OfType<Label>().First();
+            label.Opacity = 0;
             Task.WhenAll(           
                     grid.AnimateAsync(d => grid.HeightRequest = d, 0, 42, 1000),
                     label.FadeTo(1.0))
                 .Fire();
+        }
+
+        private void BindableObject_OnBindingContextChanged(object sender, EventArgs e)
+        {
         }
     }
 }

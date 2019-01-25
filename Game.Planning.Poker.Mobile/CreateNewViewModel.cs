@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Game.Planning.Poker.Mobile.Domain;
 using Pattern.Mvvm;
@@ -62,39 +60,6 @@ namespace Game.Planning.Poker.Mobile
         {
             await this.gameService.StartTurn();
             await this.navigationService.Navigate(typeof(GamePage));
-        }
-    }
-
-    public static class CollectionExtensions
-    {
-        public static void Update<T>(this ObservableCollection<T> collection, IEnumerable<T> enumerable)
-        {
-            var elements = enumerable.ToList();
-            foreach (var element in collection)
-            {
-                if (!elements.Contains(element))
-                {
-                    collection.Remove(element);
-                }
-            }
-            
-            for (var i = 0; i < elements.Count; i++)
-            {
-                var element = elements[i];
-                var oldIndex = collection.IndexOf(element);
-
-                if (oldIndex != i)
-                {
-                    if (oldIndex == -1)
-                    {
-                        collection.Insert(i, element);
-                    }
-                    else
-                    {
-                        collection.Move(oldIndex, i);
-                    }
-                }
-            }
         }
     }
 }

@@ -7,6 +7,8 @@ namespace Game.Planning.Poker.Mobile.Domain
         public Guid Id { get; set; }
         
         public string Name { get; set; }
+        
+        public string ConnectionId { get; set; }
 
         public override int GetHashCode()
         {

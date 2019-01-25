@@ -24,7 +24,7 @@ namespace Game.Planning.Poker.Mobile.iOS
             Forms.SetFlags("CollectionView_Experimental");
             Xamarin.Forms.Forms.Init();
             AnimationViewRenderer.Init();
-            
+
             this.LoadApplication(new App(this.LoadKernel));
 
             return base.FinishedLaunching(application, launchOptions);

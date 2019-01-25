@@ -10,12 +10,12 @@
         <Grid>            
             <CollectionView ItemsSource="{Binding Scores}">
                 <CollectionView.ItemsLayout>
-                   <GridItemsLayout Orientation="Horizontal"
-                                    Span="1" />
+                   <GridItemsLayout Orientation="Vertical"
+                                    Span="2" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid WidthRequest="400">
+                        <Grid>
                            <Grid Margin="40" RowSpacing="0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="50" />
