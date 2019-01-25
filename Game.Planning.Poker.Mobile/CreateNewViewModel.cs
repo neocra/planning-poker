@@ -13,6 +13,7 @@ namespace Game.Planning.Poker.Mobile
         private readonly INavigationService navigationService;
         private string bareCodeValue;
         private ObservableCollection<ScorePlayer> players = new ObservableCollection<ScorePlayer>();
+        private bool backOnStart;
 
         public CreateNewViewModel(GameService gameService, INavigationService navigationService)
         {
@@ -39,6 +40,8 @@ namespace Game.Planning.Poker.Mobile
 
         public override async Task InitAsync()
         {
+            this.backOnStart = await this.navigationService.GetParameter<bool>();
+            
             this.BareCodeValue = this.gameService.GetGameCode();
 
             this.Players.Update(this.gameService.GetPlayers());
@@ -46,7 +49,7 @@ namespace Game.Planning.Poker.Mobile
 
         private async Task StartTurn()
         {
-            await this.navigationService.Navigate(typeof(GamePage));
+            await this.navigationService.Navigate(typeof(GamePage));                
         }
 
         public Task UpdatePlayers()
@@ -58,8 +61,15 @@ namespace Game.Planning.Poker.Mobile
 
         private async Task StartCommandAsync()
         {
-            await this.gameService.StartTurn();
-            await this.navigationService.Navigate(typeof(GamePage));
+            if (this.backOnStart)
+            {
+                await this.navigationService.NavigateBack();
+            }
+            else
+            {
+                await this.gameService.StartTurn();
+                await this.navigationService.Navigate(typeof(GamePage));
+            }
         }
     }
 }

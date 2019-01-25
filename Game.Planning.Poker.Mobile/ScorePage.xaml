@@ -13,6 +13,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Margin="10,50,5,10"
@@ -23,9 +24,17 @@
                     FontAttributes="Bold"
                     CornerRadius="0" />
             <Button Grid.Column="1" 
-                    Margin="5,50,10,10"
+                    Margin="5,50,5,10"
                     Text="Next Turn" 
                     Command="{Binding NextTurnCommand}"
+                    BackgroundColor="#ffaa08"
+                    TextColor="#FFFFFF"
+                    FontAttributes="Bold"
+                    CornerRadius="0" />
+            <Button Grid.Column="2" 
+                    Margin="5,50,10,10"
+                    Text="QR-Code" 
+                    Command="{Binding QrCodeCommand}"
                     BackgroundColor="#ffaa08"
                     TextColor="#FFFFFF"
                     FontAttributes="Bold"

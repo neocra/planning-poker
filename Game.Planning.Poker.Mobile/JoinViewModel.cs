@@ -76,7 +76,7 @@ namespace Game.Planning.Poker.Mobile
 
             await this.gameService.StartGameAsync(gameCode, true);
             
-            await this.navigationService.Navigate(typeof(CreateNewPage));
+            await this.navigationService.Navigate(typeof(CreateNewPage), false);
         }
 
         private async Task ScanAsync()
