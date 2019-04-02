@@ -40,7 +40,7 @@ namespace Game.Planning.Poker.Mobile
 
         public override async Task InitAsync()
         {
-            this.backOnStart = await this.navigationService.GetParameter<bool>();
+            this.backOnStart = await this.navigationService.GetParameter<bool>(this);
             
             this.BareCodeValue = this.gameService.GetGameCode();
 
