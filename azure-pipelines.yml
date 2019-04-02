@@ -72,6 +72,7 @@ jobs:
           # https://go.microsoft.com/fwlink/?linkid=871629 
     
           sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_16_0_0
+          echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_10.1.app
           sudo xcode-select -s /Applications/Xcode_10.1.app/Contents/Developer
         displayName: 'Select Xamarin SDK version'
       - task: vs-publisher-473885.motz-mobile-buildtasks.ios-bundle-version.ios-bundle-version@1
