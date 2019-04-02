@@ -74,7 +74,7 @@ namespace Game.Planning.Poker.Mobile
         {
             var gameCode = Guid.NewGuid().ToString();
 
-            await this.gameService.StartGameAsync(gameCode, true);
+            await this.gameService.StartGameAsync(gameCode);
             
             await this.navigationService.Navigate(typeof(CreateNewPage), false);
         }

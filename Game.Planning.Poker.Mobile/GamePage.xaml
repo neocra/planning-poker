@@ -23,6 +23,10 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="50" />
                                 </Grid.RowDefinitions>
+                               <Grid.GestureRecognizers>
+                                   <TapGestureRecognizer Command="{Binding VoteCommand}" 
+                                                         CommandParameter="{Binding}" />
+                               </Grid.GestureRecognizers>
                                 <BoxView Grid.Row="0" CornerRadius="10,10,0,0" BackgroundColor="{Binding Color}" />
                                 <Label FontAttributes="Bold" FontSize="18" TextColor="White" Grid.Row="0" Margin="20,10" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Binding Name}" />                            
                                 <BoxView Grid.Row="2" CornerRadius="0,0,10,10" BackgroundColor="{Binding Color}" />
@@ -32,13 +36,6 @@
                                 <BoxView Grid.Row="1" Grid.RowSpan="1" WidthRequest="2" BackgroundColor="{Binding Color}" HorizontalOptions="End" />
                                 <Label TextColor="{Binding Color}" FontAttributes="Bold" Grid.Row="1" Margin="10" VerticalOptions="Center" Text="{Binding Name}" FontSize="40" HorizontalOptions="Center" />                            
                            </Grid>
-                            <Button Margin="0,0,0,20" 
-                                    TextColor="#324250" 
-                                    BackgroundColor="#eaeef5"
-                                    VerticalOptions="Start" 
-                                    Text="Vote" 
-                                    Command="{Binding VoteCommand}" 
-                                    CommandParameter="{Binding}" />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>        

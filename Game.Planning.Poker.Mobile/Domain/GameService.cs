@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Pattern.Mvvm;
@@ -12,6 +13,8 @@ namespace Game.Planning.Poker.Mobile.Domain
     public class GameService
     {
         private readonly List<ScorePlayer> scorePlayers = new List<ScorePlayer>();
+
+        private static object lockObj = new object();
         
         private readonly GameConnection gameConnection;
         private Func<Task> updatePlayers;
@@ -19,7 +22,6 @@ namespace Game.Planning.Poker.Mobile.Domain
         private Func<Task> display;
 
         private Player currentPlayer;
-        private bool master;
         private string gameCode;
 
         public GameService(GameConnection gameConnection)
@@ -39,7 +41,7 @@ namespace Game.Planning.Poker.Mobile.Domain
                 if (scorePlayer.ConnectionId == connectionId)
                 {
                     this.scorePlayers.Remove(scorePlayer);
-                    return this.updatePlayers();
+                    return this.Safe(this.updatePlayers);
                 }
             }
             
@@ -53,10 +55,7 @@ namespace Game.Planning.Poker.Mobile.Domain
                 scorePlayer.Show = true;
             }
 
-            if (this.display != null)
-            {
-                await this.display();
-            }
+            await this.Safe(this.display);
         }
 
         public void CallbackUpdatePlayers(Func<Task> updatePlayers)
@@ -82,52 +81,63 @@ namespace Game.Planning.Poker.Mobile.Domain
                 scorePlayer.Score = null;
             }
             
-            if (this.startTurn != null)
-            {
-                await this.startTurn?.Invoke();
-            }
+            await this.Safe(this.startTurn);
         }
 
         private async Task InternalUpdatePlayer(Player playerUpdate)
         {
-            this.UpdateOrAddPlayer(playerUpdate);
-
-            if (this.master)
+            if (this.UpdateOrAddPlayer(playerUpdate) == UpdatePlayerType.Insert)
             {
-                foreach (var player in this.scorePlayers)
-                {
-                    await this.gameConnection.UpdatePlayerAsync(new Player() {Id = player.Id, Name = player.Name});
-                }
+                await this.gameConnection.UpdatePlayerAsync(new Player {Id = this.currentPlayer.Id, Name = this.currentPlayer.Name});                
             }
-
-            if (this.updatePlayers != null)
-            {
-                await this.updatePlayers();                
-            }
+            
+            await this.Safe(this.updatePlayers);
         }
 
-        private void UpdateOrAddPlayer(Player playerUpdate)
+        private Task Safe(Func<Task> func)
         {
-            var hasSet = false;
+            Monitor.Enter(lockObj);
+            try
+            {
+                if (func != null)
+                {
+                    return func();
+                }
+            }
+            finally
+            {
+                Monitor.Exit(lockObj);
+            }
+            
+            return Task.CompletedTask;
+        }
+
+        private UpdatePlayerType UpdateOrAddPlayer(Player playerUpdate)
+        {            
             foreach (var scorePlayer in this.scorePlayers)
             {
                 if (playerUpdate.Id == scorePlayer.Id)
                 {
-                    scorePlayer.Name = playerUpdate.Name;
-                    scorePlayer.ConnectionId = playerUpdate.ConnectionId;
-                    hasSet = true;
+                    if (scorePlayer.Name != playerUpdate.Name 
+                        || scorePlayer.ConnectionId != playerUpdate.ConnectionId)
+                    {
+                        scorePlayer.Name = playerUpdate.Name;
+                        scorePlayer.ConnectionId = playerUpdate.ConnectionId;                  
+                        return UpdatePlayerType.Update;
+                    }
+                    
+                    return UpdatePlayerType.None;
                 }
             }
 
-            if (!hasSet)
+            this.scorePlayers.Add(new ScorePlayer
             {
-                this.scorePlayers.Add(new ScorePlayer()
-                {
-                    Id = playerUpdate.Id,
-                    Name = playerUpdate.Name,
-                    ConnectionId = playerUpdate.ConnectionId
-                });
-            }
+                Id = playerUpdate.Id,
+                Name = playerUpdate.Name,
+                ConnectionId = playerUpdate.ConnectionId
+            });                
+
+            return UpdatePlayerType.Insert;
         }
 
         public void SetPlayer(Player player)
@@ -136,9 +146,8 @@ namespace Game.Planning.Poker.Mobile.Domain
             this.UpdateOrAddPlayer(player);
         }
 
-        public async Task StartGameAsync(string bareCodeValue, bool master = false)
+        public async Task StartGameAsync(string bareCodeValue)
         {
-            this.master = master;
             this.gameCode = bareCodeValue; 
             await this.gameConnection.StartGameAsync(bareCodeValue, this.currentPlayer);
         }
@@ -190,11 +199,8 @@ namespace Game.Planning.Poker.Mobile.Domain
         private async Task InternalVote(Player player, double vote)
         {
             await this.Vote(player, vote);
-            
-            if (this.updatePlayers != null)
-            {
-                await this.updatePlayers();                
-            }
+
+            await this.Safe(this.updatePlayers);
         }
 
         public string GetGameCode()
@@ -278,5 +284,12 @@ namespace Game.Planning.Poker.Mobile.Domain
             this.display = null;
             this.startTurn = null;
         }
+    }
+
+    internal enum UpdatePlayerType
+    {
+        None,
+        Update,
+        Insert
     }
 }
