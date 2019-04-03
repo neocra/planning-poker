@@ -26,7 +26,7 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>CFBundleName</key>
-	<string>Planning Poker</string>
+	<string>Planning Poker Team</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Can we use your camera</string>
 	<key>UIRequiresFullScreen</key>

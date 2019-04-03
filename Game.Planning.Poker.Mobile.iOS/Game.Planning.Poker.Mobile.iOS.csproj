@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -248,31 +248,41 @@
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-40.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-58.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-87.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-80.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-120.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-40-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-58-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-87-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-80-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-120-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-180-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-40-2.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-152-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-167-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-1024-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-120-2.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-180.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-152.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-167.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-1024.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-48.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-55.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-88.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-100.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-172.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-196.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-16.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-48-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-55-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-58-2.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-87.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-80-2.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-88-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-100-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-172-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-196-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-16-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-32-1.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-32.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-64.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-128.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-64-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-128-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-256-1.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-256.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-512-1.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-512.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-1024-2.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\logo.json" />
