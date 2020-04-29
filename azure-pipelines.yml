@@ -319,10 +319,10 @@ stages:
                   displayName: 'Signing and aligning APK file(s) **/*.apk'
                   inputs:
                     apkFiles: '$(Pipeline.Workspace)/droid/com.neocra.planningpoker.apk'
-                    apksignerKeystoreFile: PlanningPoker.jks
-                    apksignerKeystorePassword: PlanningPoker
-                    apksignerKeystoreAlias: PlanningPoker
-                    apksignerKeyPassword: PlanningPoker
+                    apksignerKeystoreFile: planningpoker.jks
+                    apksignerKeystorePassword: planningpoker
+                    apksignerKeystoreAlias: planningpoker
+                    apksignerKeyPassword: planningpoker
                 - task: AppCenterDistribute@3
                   displayName: 'Deploy com.neocra.planningpoker.apk to Visual Studio App Center'
                   inputs:

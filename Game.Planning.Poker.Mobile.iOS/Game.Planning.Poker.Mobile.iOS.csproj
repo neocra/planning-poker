@@ -234,9 +234,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Game.Planning.Poker.Mobile\appsettings.json">
+    <BundleResource Include="..\Game.Planning.Poker.Mobile\appsettings.json">
       <Link>Assets/appsettings.json</Link>
-    </EmbeddedResource>
+    </BundleResource>
     <Content Include="Entitlements.plist" />
     <Content Include="Resources\Logo.png" />
   </ItemGroup>
