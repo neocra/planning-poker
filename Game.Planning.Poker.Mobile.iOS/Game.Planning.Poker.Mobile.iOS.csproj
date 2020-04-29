@@ -97,8 +97,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie" Version="2.7.0" />
-    <PackageReference Include="Com.Airbnb.iOS.Lottie" Version="2.5.6" />
+    <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie" Version="3.1.1" />
+    <PackageReference Include="Com.Airbnb.iOS.Lottie" Version="2.5.11" />
     <PackageReference Include="SkiaSharp" Version="1.68.0.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.0" />
     <PackageReference Include="SkiaSharp.Views" Version="1.68.0" />
@@ -164,14 +164,14 @@
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="1.1.0" />
     <PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
     <PackageReference Include="NETStandard.Library" Version="1.6.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="Pattern.Config" Version="1.4.0-unstable0023" />
-    <PackageReference Include="Pattern.Core" Version="1.4.0-unstable0023" />
-    <PackageReference Include="Pattern.Core.Interfaces" Version="1.4.0-unstable0023" />
-    <PackageReference Include="Pattern.Module" Version="1.4.0-unstable0023" />
-    <PackageReference Include="Pattern.Mvvm" Version="1.4.0-unstable0023" />
-    <PackageReference Include="Pattern.Mvvm.Forms" Version="1.4.0-unstable0023" />
-    <PackageReference Include="Pattern.Tasks" Version="1.4.0-unstable0023" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Pattern.Config" Version="1.4.0-unstable0029" />
+    <PackageReference Include="Pattern.Core" Version="1.4.0-unstable0029" />
+    <PackageReference Include="Pattern.Core.Interfaces" Version="1.4.0-unstable0029" />
+    <PackageReference Include="Pattern.Module" Version="1.4.0-unstable0029" />
+    <PackageReference Include="Pattern.Mvvm" Version="1.4.0-unstable0029" />
+    <PackageReference Include="Pattern.Mvvm.Forms" Version="1.4.0-unstable0029" />
+    <PackageReference Include="Pattern.Tasks" Version="1.4.0-unstable0029" />
     <PackageReference Include="System.AppContext" Version="4.3.0" />
     <PackageReference Include="System.Buffers" Version="4.5.0" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
@@ -220,16 +220,16 @@
     <PackageReference Include="System.Threading.Timer" Version="4.3.0" />
     <PackageReference Include="System.Xml.ReaderWriter" Version="4.3.0" />
     <PackageReference Include="System.Xml.XDocument" Version="4.3.0" />
-    <PackageReference Include="Xamarin.Forms" Version="4.0.0.250467-pre7" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
-    <PackageReference Include="Xamarin.iOS.MaterialComponents" Version="60.1.0" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.657" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.1" />
+    <PackageReference Include="Xamarin.iOS.MaterialComponents" Version="92.0.0" />
     <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
     <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>1.12.0</Version>
+      <Version>3.2.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>1.12.0</Version>
+      <Version>3.2.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
