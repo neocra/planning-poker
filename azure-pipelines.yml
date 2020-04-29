@@ -17,10 +17,10 @@ stages:
           - task: SonarCloudPrepare@1
             inputs:
               SonarCloud: 'Sonar Neocra'
-              organization: 'neocra'
+              organization: 'neocra-github'
               scannerMode: 'MSBuild'
-              projectKey: 'planningpoker'
-              projectName: 'PlanningPoker'
+              projectKey: 'planning-poker-teams'
+              projectName: 'Planning Poker'
               projectVersion: '$(GitVersion.MajorMinorPatch)'
           - task: NuGetToolInstaller@0
             displayName: 'Use NuGet 5.4.0'
@@ -252,7 +252,7 @@ stages:
                     provider: 'azurerm'
                     command: 'init'
                     workingDirectory: '$(Pipeline.Workspace)/terraform/'
-                    backendServiceArm: 'Neocra Trial'
+                    backendServiceArm: 'Neocra Subscription'
                     backendAzureRmResourceGroupName: 'planningpoker'
                     backendAzureRmStorageAccountName: 'planningpokerterraform'
                     backendAzureRmContainerName: 'state'
@@ -263,7 +263,7 @@ stages:
                     command: 'apply'
                     workingDirectory: '$(Pipeline.Workspace)/terraform/'
                     commandOptions: '-var-file="env.tfvars" -auto-approve'
-                    environmentServiceNameAzureRM: 'Neocra Trial'
+                    environmentServiceNameAzureRM: 'Neocra Subscription'
       - deployment: API
         pool:
           vmImage: 'windows-latest'
@@ -281,7 +281,7 @@ stages:
                 - task: AzureRmWebAppDeployment@4
                   inputs:
                     ConnectionType: 'AzureRM'
-                    azureSubscription: 'Neocra Trial'
+                    azureSubscription: 'Neocra Subscription'
                     appType: 'webApp'
                     WebAppName: 'planningpoker-api-$(env)$(region)'
                     packageForLinux: '$(Pipeline.Workspace)/API/'
