@@ -75,14 +75,6 @@ stages:
               GitVersion.AssemblySemVer: $(GitVersion.AssemblySemVer)
           - publish: $(Build.ArtifactStagingDirectory)/drop/
             artifact: drop
-          - task: CopyFiles@2
-            displayName: 'Copy Files to: $(build.ArtifactStagingDirectory)/terraform/'
-            inputs:
-              Contents: '**/terraform/*'
-              TargetFolder: '$(Build.ArtifactStagingDirectory)/terraform/'
-              flattenFolders: true
-          - publish: $(Build.ArtifactStagingDirectory)/terraform/
-            artifact: terraform
       - job: MacOS
         dependsOn: Windows
         pool:
@@ -222,53 +214,13 @@ stages:
     variables:
       bundle.Id: 'com.neocra.planningpoker'
       bundle.Name: 'Planning Poker'
-      env: p
-      envName: production
-      region: we
       appCenter: 'ios=373ae46f-d7e9-4e59-aee1-e0dea4c3fca8;android=00d8b403-9905-49de-b334-0c66c17330a1'
       adModEnabled: true
     jobs:
-      - deployment: Terraform
-        environment: production
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - download: current
-                  artifact: terraform
-                - script: |
-                    echo 'env = "$(env)"' > $(Pipeline.Workspace)/terraform/env.tfvars
-                    echo 'envName = "$(envName)"' >> $(Pipeline.Workspace)/terraform/env.tfvars
-                    echo 'region = "$(region)"' >> $(Pipeline.Workspace)/terraform/env.tfvars
-                    echo 'subscription_id = "4084aa24-3bfb-4f2a-87ad-2b1e5bf10cfd"' >> $(Pipeline.Workspace)/terraform/env.tfvars
-                    echo 'tenant_id = "92342e04-11f8-40d2-80fc-fed2ac392ebd"' >> $(Pipeline.Workspace)/terraform/env.tfvars
-                    echo 'always_on = true' >> $(Pipeline.Workspace)/terraform/env.tfvars
-                    echo 'apple_uri = "https://buy.itunes.apple.com"' >> $(Pipeline.Workspace)/terraform/env.tfvars                    
-                - task: TerraformInstaller@0
-                  inputs:
-                    terraformVersion: '0.12.16'
-                - task: TerraformTaskV1@0
-                  inputs:
-                    provider: 'azurerm'
-                    command: 'init'
-                    workingDirectory: '$(Pipeline.Workspace)/terraform/'
-                    backendServiceArm: 'Neocra Subscription'
-                    backendAzureRmResourceGroupName: 'planningpoker'
-                    backendAzureRmStorageAccountName: 'planningpokerterraform'
-                    backendAzureRmContainerName: 'state'
-                    backendAzureRmKey: 'prod.tfstate'
-                - task: TerraformTaskV1@0
-                  inputs:
-                    provider: 'azurerm'
-                    command: 'apply'
-                    workingDirectory: '$(Pipeline.Workspace)/terraform/'
-                    commandOptions: '-var-file="env.tfvars" -auto-approve'
-                    environmentServiceNameAzureRM: 'Neocra Subscription'
       - deployment: API
         pool:
           vmImage: 'windows-latest'
         environment: production
-        dependsOn: Terraform
         strategy:
           runOnce:
             deploy:
@@ -283,7 +235,7 @@ stages:
                     ConnectionType: 'AzureRM'
                     azureSubscription: 'Neocra Subscription'
                     appType: 'webApp'
-                    WebAppName: 'planningpoker-api-$(env)$(region)'
+                    WebAppName: 'planning-poker-team-api'
                     packageForLinux: '$(Pipeline.Workspace)/API/'
                     UseWebDeploy: true
                     DeploymentType: webDeploy
@@ -313,7 +265,7 @@ stages:
                     sign=`security find-identity -v -p codesigning | head -n 1 | sed -E 's/^[^"]+"//g' | sed -E 's/"//g'`
                     echo '##vso[task.setvariable variable=signingIdentity;]'$sign
                     echo "Found : $sign $prov"
-                    echo '##vso[task.setvariable variable=urlApi;]'https://api-$(env)$(region).planningpoker.com/
+                    echo '##vso[task.setvariable variable=urlApi;]'https://planning-poker-team-api.azurewebsites.net/
                 - bash: 'brew install p7zip'
                   displayName: 'Bash Script'
                 - task: ExtractFiles@1
@@ -384,7 +336,7 @@ stages:
                 - download: current
                   artifact: droid
                 - script: |
-                    echo '##vso[task.setvariable variable=urlApi;]'https://api-$(env)$(region).planningpoker.com/
+                    echo '##vso[task.setvariable variable=urlApi;]'https://planning-poker-team-api.azurewebsites.net/
                 - bash: 'unzip "$(Pipeline.Workspace)/droid/com.neocra.planningpoker.apk" assets/appsettings.json'
                   displayName: 'Bash Script'
                   workingDirectory: '$(Pipeline.Workspace)/droid/'
