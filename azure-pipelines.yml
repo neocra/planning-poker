@@ -95,7 +95,7 @@ stages:
           - task: InstallAppleProvisioningProfile@1
             displayName: 'Install an Apple provisioning profile'
             inputs:
-              provProfileSecureFile: 'Developer.mobileprovision'
+              provProfileSecureFile: 'PlanningPokerDeveloper.mobileprovision'
           - download: current
             artifact: drop
           - script: /bin/bash drop/variables.sh
@@ -304,7 +304,7 @@ stages:
                 - task: InstallAppleProvisioningProfile@1
                   displayName: 'Install an Apple provisioning profile'
                   inputs:
-                    provProfileSecureFile: Production.mobileprovision
+                    provProfileSecureFile: PlanningPokerProduction.mobileprovision
                 - script: |
                     provfile=`ls ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision | head -1`
                     prov=`security cms -D -i "$provfile" | grep UUID -A 1 | grep "<string>"`
