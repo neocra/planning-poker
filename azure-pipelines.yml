@@ -19,7 +19,7 @@ stages:
               SonarCloud: 'Sonar Neocra'
               organization: 'neocra-github'
               scannerMode: 'MSBuild'
-              projectKey: 'planning-poker-teams'
+              projectKey: 'planning-poker-team'
               projectName: 'Planning Poker'
               projectVersion: '$(GitVersion.MajorMinorPatch)'
           - task: NuGetToolInstaller@0
