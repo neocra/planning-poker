@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Planning Poker</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.neocra.pokerplanning</string>
+	<string>com.neocra.planningpoker</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.0.0</string>
 	<key>CFBundleVersion</key>
