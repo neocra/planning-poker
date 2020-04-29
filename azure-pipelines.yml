@@ -140,23 +140,6 @@ stages:
               Contents: '**/Release/*.ipa'
               TargetFolder: '$(build.artifactstagingdirectory)/ios/'
               flattenFolders: true
-          - task: XamariniOS@2
-            inputs:
-              solution: '**/*.sln'
-              configuration: 'UITest'
-              clean: true
-              buildForSimulator: false
-              signingIdentity: $(signingIdentity)
-              signingProvisioningProfileID: $(signingProvisioningProfileID)
-          - task: CopyFiles@2
-            displayName: 'iOS UI test copy to: $(build.artifactstagingdirectory)/ios-ui/'
-            inputs:
-              Contents: |
-                **/UITest/*.ipa
-                **/*.TestsUI/bin/Release/*
-                **/packages/Xamarin.UITest.*/tools/*
-              TargetFolder: '$(build.artifactstagingdirectory)/ios-ui/'
-              flattenFolders: true
           - task: XamarinAndroid@1
             displayName: 'Build Xamarin.Android project **/*.Droid.csproj'
             inputs:
@@ -167,20 +150,6 @@ stages:
             inputs:
               Contents: '**/Release/*.apk'
               TargetFolder: '$(build.artifactstagingdirectory)/droid/'
-              flattenFolders: true
-          - task: XamarinAndroid@1
-            displayName: 'Build Xamarin.Android project **/*.Droid.csproj'
-            inputs:
-              projectFile: '**/*.Droid.csproj'
-              configuration: 'UITest'
-          - task: CopyFiles@2
-            displayName: 'Android UI test copy to: $(build.artifactstagingdirectory)/droid-ui/'
-            inputs:
-              Contents: |
-                **/UITest/*.apk
-                **/*.TestsUI/bin/Release/*
-                **/packages/Xamarin.UITest.*/tools/*
-              TargetFolder: '$(build.artifactstagingdirectory)/droid-ui/'
               flattenFolders: true
           - task: CopyFiles@2
             displayName: 'WhatToTest copy to: $(build.artifactstagingdirectory)/ios/'
@@ -194,20 +163,10 @@ stages:
               ArtifactName: iOS
               PathtoPublish: '$(build.artifactstagingdirectory)/ios/'
           - task: PublishBuildArtifacts@1
-            displayName: 'Publish Artifact iOS UI'
-            inputs:
-              ArtifactName: iOS-UI
-              PathtoPublish: '$(build.artifactstagingdirectory)/ios-ui/'
-          - task: PublishBuildArtifacts@1
             displayName: 'Publish Artifact droid'
             inputs:
               ArtifactName: droid
               PathtoPublish: '$(build.artifactstagingdirectory)/droid/'
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish Artifact droid UI'
-            inputs:
-              ArtifactName: droid-UI
-              PathtoPublish: '$(build.artifactstagingdirectory)/droid-UI/'
 
   - stage: Prod
 #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
