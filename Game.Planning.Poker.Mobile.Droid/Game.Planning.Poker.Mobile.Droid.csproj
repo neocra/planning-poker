@@ -85,6 +85,7 @@
     <PackageReference Include="Pattern.Mvvm" Version="1.4.0-unstable0029" />
     <PackageReference Include="Pattern.Mvvm.Forms" Version="1.4.0-unstable0029" />
     <PackageReference Include="Pattern.Tasks" Version="1.4.0-unstable0029" />
+    <PackageReference Include="Pattern.Xamarin.Config" Version="0.1.0" />
     <PackageReference Include="SkiaSharp" Version="1.68.0" />
     <PackageReference Include="SkiaSharp.Views" Version="1.68.0" />
     <PackageReference Include="Xamarin.Android.Support.Annotations" Version="28.0.0.3" />
@@ -135,6 +136,11 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\Logo.png" />
     <AndroidResource Include="Resources\drawable\splash_screen.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="..\Game.Planning.Poker.Mobile\appsettings.json">
+      <Link>Assets/appsettings.json</Link>
+    </AndroidAsset>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

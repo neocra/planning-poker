@@ -1,8 +1,11 @@
 ﻿using Foundation;
+using Game.Planning.Poker.Mobile.Domain;
 using Game.Planning.Poker.Mobile.Infrastructure;
 using Lottie.Forms.iOS.Renderers;
 using Pattern.Config;
 using Pattern.Core.Interfaces;
+using Pattern.Xamarin.Config;
+using Pattern.Xamarin.Config.platform.ios;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -18,10 +21,8 @@ namespace Game.Planning.Poker.Mobile.iOS
 
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
-           
             ZXing.Net.Mobile.Forms.iOS.Platform.Init();
 
-            Forms.SetFlags("CollectionView_Experimental");
             Xamarin.Forms.Forms.Init();
             AnimationViewRenderer.Init();
 
@@ -33,6 +34,10 @@ namespace Game.Planning.Poker.Mobile.iOS
         private void LoadKernel(IKernel obj)
         {
             obj.Bind<IQrCodeScan>().To<QrCodeScan>();
+            obj.LoadConfig<ConfigReader<AppConfig>, AppConfig>(new ConfigReader<AppConfig>()
+            {
+                Filename = "appsettings.json"
+            });
         }
 
         public override void OnResignActivation(UIApplication application)

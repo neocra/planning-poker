@@ -99,6 +99,7 @@
   <ItemGroup>
     <PackageReference Include="Com.Airbnb.Xamarin.Forms.Lottie" Version="3.1.1" />
     <PackageReference Include="Com.Airbnb.iOS.Lottie" Version="2.5.11" />
+    <PackageReference Include="Pattern.Xamarin.Config" Version="0.1.0" />
     <PackageReference Include="SkiaSharp" Version="1.68.0.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.0" />
     <PackageReference Include="SkiaSharp.Views" Version="1.68.0" />
@@ -233,6 +234,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\Game.Planning.Poker.Mobile\appsettings.json">
+      <Link>Assets/appsettings.json</Link>
+    </EmbeddedResource>
     <Content Include="Entitlements.plist" />
     <Content Include="Resources\Logo.png" />
   </ItemGroup>

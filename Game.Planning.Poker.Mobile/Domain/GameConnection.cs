@@ -19,12 +19,12 @@ namespace Game.Planning.Poker.Mobile.Domain
         private Func<Player, double, Task> newVote;
         private string gameCode;
 
-        public GameConnection()
+        public GameConnection(AppConfig appConfig)
         {
             this.connection = new HubConnectionBuilder()
                 //                .WithUrl("http://10.1.1.97:5000/pokerhub")
 //                .WithUrl("http://10.10.1.36:5000/pokerhub")
-                .WithUrl("https://poker-planning.azurewebsites.net/pokerhub")
+                .WithUrl(appConfig.UrlApi + "/pokerhub")
                 .Build();
 
             this.connection.Closed += async (error) =>

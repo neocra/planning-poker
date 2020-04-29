@@ -224,7 +224,7 @@ stages:
                     sign=`security find-identity -v -p codesigning | head -n 1 | sed -E 's/^[^"]+"//g' | sed -E 's/"//g'`
                     echo '##vso[task.setvariable variable=signingIdentity;]'$sign
                     echo "Found : $sign $prov"
-                    echo '##vso[task.setvariable variable=urlApi;]'https://planning-poker-team-api.azurewebsites.net/
+                    echo '##vso[task.setvariable variable=urlApi;]'https://planning-poker-team-api.azurewebsites.net
                 - bash: 'brew install p7zip'
                   displayName: 'Bash Script'
                 - task: ExtractFiles@1
@@ -295,7 +295,7 @@ stages:
                 - download: current
                   artifact: droid
                 - script: |
-                    echo '##vso[task.setvariable variable=urlApi;]'https://planning-poker-team-api.azurewebsites.net/
+                    echo '##vso[task.setvariable variable=urlApi;]'https://planning-poker-team-api.azurewebsites.net
                 - bash: 'unzip "$(Pipeline.Workspace)/droid/com.neocra.planningpoker.apk" assets/appsettings.json'
                   displayName: 'Bash Script'
                   workingDirectory: '$(Pipeline.Workspace)/droid/'

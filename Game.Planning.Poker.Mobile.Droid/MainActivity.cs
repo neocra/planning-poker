@@ -7,11 +7,14 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Runtime;
 using Android.Widget;
+using Game.Planning.Poker.Mobile.Domain;
 using Game.Planning.Poker.Mobile.Infrastructure;
 using Lottie.Forms.Droid;
 using Pattern.Core.Interfaces;
 using Xamarin.Forms;
 using Pattern.Config;
+using Pattern.Xamarin.Config;
+using Pattern.Xamarin.Config.platform.android;
 using ZXing;
 using ZXing.Mobile;
 
@@ -25,7 +28,6 @@ namespace Game.Planning.Poker.Mobile.Droid
             base.OnCreate(savedInstanceState);
 
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
-            Forms.SetFlags("CollectionView_Experimental");
 
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
             AnimationViewRenderer.Init();
@@ -36,6 +38,10 @@ namespace Game.Planning.Poker.Mobile.Droid
         private void LoadKernel(IKernel obj)
         {
             obj.Bind<IQrCodeScan>().ToMethod(() => new QrCodeScan(this));
+            obj.LoadConfig<ConfigReader<AppConfig>, AppConfig>(new ConfigReader<AppConfig>(this)
+            {
+                Filename = "appsettings.json"
+            });
         }
         
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
