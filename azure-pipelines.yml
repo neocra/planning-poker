@@ -107,7 +107,7 @@ stages:
             displayName: 'Change identifier in Game.Planning.Poker.Mobile.iOS/Info.plist'
             inputs:
               sourcePath: Game.Planning.Poker.Mobile.iOS/Info.plist
-              bundleIdentifier: 'com.neocra.planningpokerdev'
+              bundleIdentifier: 'com.neocra.planningpoker'
               bundleName: 'PlanningPoker'
               bundleDisplayName: 'PlanningPoker'
           - task: NuGetToolInstaller@0
