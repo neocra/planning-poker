@@ -52,6 +52,7 @@ namespace Game.Planning.Poker
             }
 
             app.UseHttpsRedirection();
+            app.UseRouting();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseEndpoints(routes =>
