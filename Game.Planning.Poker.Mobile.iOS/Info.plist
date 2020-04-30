@@ -2,10 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>CFBundleDisplayName</key>
 	<string>Planning Poker</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.trollcorp.pokerplanning</string>
+	<string>com.neocra.planningpoker</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.0.0</string>
 	<key>CFBundleVersion</key>
@@ -28,7 +30,7 @@
 	<key>CFBundleName</key>
 	<string>Planning Poker Team</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Can we use your camera</string>
+	<string>Can we use your camera to scan QR-Code</string>
 	<key>UIRequiresFullScreen</key>
 	<true/>
 	<key>XSAppIconAssets</key>

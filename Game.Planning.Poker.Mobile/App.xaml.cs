@@ -25,9 +25,7 @@ namespace Game.Planning.Poker.Mobile
         {
             new ErrorHandler().UseDefault();
 
-            AppCenter.Start("ios=4c5e3d2f-0bde-44ea-96dc-f75b6c992156;" +
-                              "android=794f9ea1-ac36-45f4-93c5-f1f19ef4ddae",
-                              typeof(Analytics), typeof(Crashes));
+           
             
             this.InitializeComponent();
 
@@ -39,7 +37,12 @@ namespace Game.Planning.Poker.Mobile
             configKernel(kernel);
 
             kernel.StartModules();
-
+            
+            var config = kernel.Get<AppConfig>();
+            
+            AppCenter.Start(config.AppCenter,
+                typeof(Analytics), typeof(Crashes));
+            
             this.MainPage = kernel.Get<NavigationPage>();
 
             var bootStrap = kernel.Get<BootStrap>();

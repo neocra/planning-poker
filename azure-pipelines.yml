@@ -1,136 +1,340 @@
-jobs:
-  - job: Windows
-    pool: Hosted VS2017
-    steps:
-      - task: gittools.gitversion.gitversion-task.GitVersion@3
-        displayName: GitVersion
-        inputs:
-          updateAssemblyInfo: true
-      - task: NuGetToolInstaller@0
-        displayName: 'Use NuGet 4.9.2'
-        inputs:
-          versionSpec: 4.9.2
-      - task: NuGetCommand@2
-        displayName: 'NuGet restore'
-        inputs:
-          restoreSolution: '**\*.sln'
-      - task: VSBuild@1
-        displayName: 'Build solution **\*.sln'
-        inputs:
-          platform: 'API'
-          configuration: 'Release'
-          msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="package\WebApp.zip"'
-      - task: CopyFiles@2
-        displayName: 'Copy Files to: $(build.artifactstagingdirectory)/web/'
-        inputs:
-          Contents: '**/Game.Planning.Poker/package/WebApp.zip'
-          TargetFolder: '$(build.artifactstagingdirectory)/web/'
-          flattenFolders: true
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifact API'
-        inputs:
-          ArtifactName: API
-          PathtoPublish: '$(build.artifactstagingdirectory)/web/'
-      - script: |
-          echo GitVersion.NuGetVersionV2:%GitVersion.NuGetVersionV2%
-          echo GitVersion.MajorMinorPatch:%GitVersion.MajorMinorPatch%
-          echo GitVersion.AssemblySemVer:%GitVersion.AssemblySemVer%
-          echo #!/bin/bash >variables.sh
-          echo echo "##vso[task.setvariable variable=GitVersion.NuGetVersionV2]%GitVersion.NuGetVersionV2%">>variables.sh
-          echo echo "##vso[task.setvariable variable=GitVersion.MajorMinorPatch]%GitVersion.MajorMinorPatch%">>variables.sh
-          echo echo "##vso[task.setvariable variable=GitVersion.AssemblySemVer]%GitVersion.AssemblySemVer%">>variables.sh
-        workingDirectory: '$(Build.ArtifactStagingDirectory)'
-        displayName: 'Save variables to scripts'
-        env:
-          GitVersion.NuGetVersionV2: $(GitVersion.NuGetVersionV2)
-          GitVersion.MajorMinorPatch: $(GitVersion.MajorMinorPatch)
-          GitVersion.AssemblySemVer: $(GitVersion.AssemblySemVer)
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifact: drop'
+trigger:
+  - master
+pr:
+  - master
 
-  - job: MacOS
-    dependsOn: Windows
-    pool: Hosted macOS
-    steps:
-      - task: InstallAppleCertificate@2
-        displayName: 'Install an Apple certificate'
-        inputs:
-          certSecureFile: '53a1d7c8-2775-4d0a-8f66-828d6b16efbd'
-      - task: InstallAppleProvisioningProfile@1
-        displayName: 'Install an Apple provisioning profile'
-        inputs:
-          provProfileSecureFile: 'bf056c90-682e-4a89-9936-a2dfce50ad04'
-      - task: DownloadBuildArtifacts@0
-        displayName: 'Download Build Artifacts'
-        inputs:
-          artifactName: drop
-      - script: /bin/bash drop/variables.sh
-        workingDirectory: '$(System.ArtifactsDirectory)'
-        displayName: 'Run script to reload variables'
-      - bash: |
-          # To manually select a Xamarin SDK version on the Hosted macOS agent, run this script with the SDK version you want to target
-          # https://go.microsoft.com/fwlink/?linkid=871629 
-    
-          sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_16_0_0
-          echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_10.1.app
-          sudo xcode-select -s /Applications/Xcode_10.1.app/Contents/Developer
-        displayName: 'Select Xamarin SDK version'
-      - task: vs-publisher-473885.motz-mobile-buildtasks.ios-bundle-version.ios-bundle-version@1
-        displayName: 'Bump iOS Versions in Game.Planning.Poker.Mobile.iOS/Info.plist'
-        inputs:
-          sourcePath: Game.Planning.Poker.Mobile.iOS/Info.plist    
-          versionName: '$(GitVersion.MajorMinorPatch)'
-      - task: vs-publisher-473885.motz-mobile-buildtasks.android-manifest-version.android-manifest-version@1
-        displayName: 'Bump Android Versions in Game.Planning.Poker.Mobile.Droid/Properties/AndroidManifest.xml'
-        inputs:
-          sourcePath: Game.Planning.Poker.Mobile.Droid/Properties/AndroidManifest.xml
-          versionName: '$(GitVersion.MajorMinorPatch)'
-      - task: NuGetToolInstaller@0
-        displayName: 'Use NuGet 4.9.2'
-        inputs:
-          versionSpec: 4.9.2
-      - task: NuGetCommand@2
-        displayName: 'NuGet restore'
-        inputs:
-          restoreSolution: '**/*.sln'
-      - task: XamariniOS@2
-        displayName: 'Build Xamarin.iOS solution **/*.sln'
-        inputs:
-          solutionFile: '**/*.sln'
-          clean: true
-          signingIdentity: 'iPhone Distribution: Aurélien GALTIER (UTWUFNBJ94)'
-          signingProvisioningProfileID: 87c31047-60ff-4e9b-b172-72a31df82a28        
-          buildForSimulator: false
-      - task: XamarinAndroid@1
-        displayName: 'Build Xamarin.Android project Game.Planning.Poker.Mobile.Droid/Game.Planning.Poker.Mobile.Droid.csproj'
-        inputs:
-          projectFile: Game.Planning.Poker.Mobile.Droid/Game.Planning.Poker.Mobile.Droid.csproj
-          configuration: 'Release'
-      - task: CopyFiles@2
-        displayName: 'Copy Files to: $(build.artifactstagingdirectory)/ios/'
-        inputs:
-          Contents: '**/*.ipa'
-          TargetFolder: '$(build.artifactstagingdirectory)/ios/'
-          flattenFolders: true
-      - task: CopyFiles@2
-        displayName: 'Copy Files to: $(build.artifactstagingdirectory)/ios/'
-        inputs:
-          Contents: 'WhatToTest.txt'
-          TargetFolder: '$(build.artifactstagingdirectory)/ios/'
-          flattenFolders: true
-      - task: CopyFiles@2
-        displayName: 'Copy Files to: $(build.artifactstagingdirectory)/droid/'
-        inputs:
-          Contents: '**/*.apk'
-          TargetFolder: '$(build.artifactstagingdirectory)/droid/'
-          flattenFolders: true
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifact iOS'
-        inputs:
-          ArtifactName: iOS
-          PathtoPublish: '$(build.artifactstagingdirectory)/ios/'
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifact droid'
-        inputs:
-          ArtifactName: droid
-          PathtoPublish: '$(build.artifactstagingdirectory)/droid/'
+stages:
+  - stage: Build
+    jobs:
+      - job: Windows
+        pool:
+          vmImage: 'windows-latest'
+        steps:
+          - task: GitVersion@5
+            inputs:
+              runtime: 'core'
+              configFilePath: 'GitVersion.yml'
+          - task: SonarCloudPrepare@1
+            inputs:
+              SonarCloud: 'Sonar Neocra'
+              organization: 'neocra-github'
+              scannerMode: 'MSBuild'
+              projectKey: 'planning-poker-team'
+              projectName: 'Planning Poker'
+              projectVersion: '$(GitVersion.MajorMinorPatch)'
+          - task: NuGetToolInstaller@0
+            displayName: 'Use NuGet 5.4.0'
+            inputs:
+              versionSpec: '5.4.0'
+          - task: NuGetCommand@2
+            displayName: 'NuGet restore'
+            inputs:
+              restoreSolution: '**\*.sln'
+          - task: VSBuild@1
+            displayName: 'Build solution **\*.sln'
+            inputs:
+              platform: 'API'
+              configuration: 'Release'
+              msbuildArgs: '/t:Publish /p:Configuration=Release'
+          - task: VSTest@2
+            inputs:
+              testSelector: 'testAssemblies'
+              testAssemblyVer2: |
+                **\*Tests.dll
+                !**\publish\*Tests.dll
+                !**\*TestAdapter.dll
+                !**\obj\**
+              searchFolder: '$(System.DefaultWorkingDirectory)'
+              codeCoverageEnabled: true
+          - task: SonarCloudAnalyze@1
+          - task: SonarCloudPublish@1
+            inputs:
+              pollingTimeoutSec: '300'
+          - task: CopyFiles@2
+            displayName: 'Copy Files to: $(build.ArtifactStagingDirectory)/api/'
+            inputs:
+              sourceFolder: 'Game.Planning.Poker/bin/Release/netcoreapp3.1/publish/'
+              Contents: '**/*'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)/api/'
+          - publish: $(Build.ArtifactStagingDirectory)/api/
+            artifact: API
+          - script: |
+              mkdir drop
+              echo GitVersion.NuGetVersionV2:%GitVersion.NuGetVersionV2%
+              echo GitVersion.MajorMinorPatch:%GitVersion.MajorMinorPatch%
+              echo GitVersion.AssemblySemVer:%GitVersion.AssemblySemVer%
+              echo #!/bin/bash >drop/variables.sh
+              echo echo "##vso[task.setvariable variable=GitVersion.NuGetVersionV2]%GitVersion.NuGetVersionV2%">>drop/variables.sh
+              echo echo "##vso[task.setvariable variable=GitVersion.MajorMinorPatch]%GitVersion.MajorMinorPatch%">>drop/variables.sh
+              echo echo "##vso[task.setvariable variable=GitVersion.AssemblySemVer]%GitVersion.AssemblySemVer%">>drop/variables.sh
+            workingDirectory: $(Build.ArtifactStagingDirectory)
+            displayName: 'Save variables to scripts'
+            env:
+              GitVersion.NuGetVersionV2: $(GitVersion.NuGetVersionV2)
+              GitVersion.MajorMinorPatch: $(GitVersion.MajorMinorPatch)
+              GitVersion.AssemblySemVer: $(GitVersion.AssemblySemVer)
+          - publish: $(Build.ArtifactStagingDirectory)/drop/
+            artifact: drop
+      - job: MacOS
+        dependsOn: Windows
+        pool:
+          vmImage: 'macOS-latest'
+        steps:
+          - task: InstallAppleCertificate@2
+            displayName: 'Install an Apple certificate'
+            inputs:
+              certSecureFile: 'CertificatsDeveloper.p12'
+          - task: InstallAppleProvisioningProfile@1
+            displayName: 'Install an Apple provisioning profile'
+            inputs:
+              provProfileSecureFile: 'PlanningPokerDeveloper.mobileprovision'
+          - download: current
+            artifact: drop
+          - script: /bin/bash drop/variables.sh
+            workingDirectory: $(Pipeline.Workspace)
+            displayName: 'Run script to reload variables'
+          - task: ios-bundle-version@1
+            displayName: 'Bump iOS Versions in Game.Planning.Poker.Mobile.iOS/Info.plist'
+            inputs:
+              sourcePath: 'Game.Planning.Poker.Mobile.iOS/Info.plist'
+              versionName: '$(GitVersion.MajorMinorPatch)'
+          - task: android-manifest-version@1
+            displayName: 'Bump Android Versions in Game.Planning.Poker.Mobile.Droid/Properties/AndroidManifest.xml'
+            inputs:
+              sourcePath: 'Game.Planning.Poker.Mobile.Droid/Properties/AndroidManifest.xml'
+              versionName: '$(GitVersion.MajorMinorPatch)'
+          - task: ios-bundle-identifier@1
+            displayName: 'Change identifier in Game.Planning.Poker.Mobile.iOS/Info.plist'
+            inputs:
+              sourcePath: Game.Planning.Poker.Mobile.iOS/Info.plist
+              bundleIdentifier: 'com.neocra.planningpoker'
+              bundleName: 'PlanningPoker'
+              bundleDisplayName: 'PlanningPoker'
+          - task: NuGetToolInstaller@0
+            displayName: 'Use NuGet 5.4.0'
+            inputs:
+              versionSpec: '5.4.0'
+          - script: |
+              provfile=`ls ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision | head -1`
+              prov=`security cms -D -i "$provfile" | grep UUID -A 1 | grep "<string>"`
+              prov=`echo $prov | sed -E 's/^.*<string>//' | sed -E 's/<\/string>//'`
+              echo '##vso[task.setvariable variable=signingProvisioningProfileID;]'$prov
+              sign=`security find-identity -v -p codesigning | head -n 1 | sed -E 's/^[^"]+"//g' | sed -E 's/"//g'`
+              echo '##vso[task.setvariable variable=signingIdentity;]'$sign
+              echo "Found : $sign $prov"
+          - task: NuGetCommand@2
+            displayName: 'NuGet restore'
+            inputs:
+              restoreSolution: '**/*.sln'
+          - task: XamariniOS@2
+            displayName: 'Build Xamarin.iOS solution **/*.sln'
+            inputs:
+              solutionFile: '**/*.sln'
+              clean: true
+              buildForSimulator: false
+              signingIdentity: $(signingIdentity)
+              signingProvisioningProfileID: $(signingProvisioningProfileID)
+          - task: CopyFiles@2
+            displayName: 'iOS Release copy to: $(build.artifactstagingdirectory)/ios/'
+            inputs:
+              Contents: '**/Release/*.ipa'
+              TargetFolder: '$(build.artifactstagingdirectory)/ios/'
+              flattenFolders: true
+          - task: XamarinAndroid@1
+            displayName: 'Build Xamarin.Android project **/*.Droid.csproj'
+            inputs:
+              projectFile: '**/*.Droid.csproj'
+              configuration: 'Release'
+          - task: CopyFiles@2
+            displayName: 'Android Release copy to: $(build.artifactstagingdirectory)/droid/'
+            inputs:
+              Contents: '**/Release/*.apk'
+              TargetFolder: '$(build.artifactstagingdirectory)/droid/'
+              flattenFolders: true
+          - task: CopyFiles@2
+            displayName: 'WhatToTest copy to: $(build.artifactstagingdirectory)/ios/'
+            inputs:
+              Contents: 'WhatToTest.txt'
+              TargetFolder: '$(build.artifactstagingdirectory)/ios/'
+              flattenFolders: true
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Artifact iOS'
+            inputs:
+              ArtifactName: iOS
+              PathtoPublish: '$(build.artifactstagingdirectory)/ios/'
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Artifact droid'
+            inputs:
+              ArtifactName: droid
+              PathtoPublish: '$(build.artifactstagingdirectory)/droid/'
+
+  - stage: Prod
+#    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    variables:
+      bundle.Id: 'com.neocra.planningpoker'
+      bundle.Name: 'Planning Poker'
+      appCenter: 'ios=707dbe42-2d2e-4578-bafc-fcc887df156e;android=13b54322-4829-495f-b0cd-bf5d2b4452ad'
+      adModEnabled: true
+    jobs:
+      - deployment: API
+        pool:
+          vmImage: 'windows-latest'
+        environment: production
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: API
+                - task: git-tag-on-release-task@9
+                  inputs:
+                    staticTagName: '$(Build.BuildNumber)'
+                - task: AzureRmWebAppDeployment@4
+                  inputs:
+                    ConnectionType: 'AzureRM'
+                    azureSubscription: 'Neocra Subscription'
+                    appType: 'webApp'
+                    WebAppName: 'planning-poker-team-api'
+                    packageForLinux: '$(Pipeline.Workspace)/API/'
+                    UseWebDeploy: true
+                    DeploymentType: webDeploy
+      - deployment: iOS
+        pool:
+          vmImage: 'macOS-latest'
+        environment: production
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: iOS
+                - task: InstallAppleCertificate@2
+                  displayName: 'Install an Apple certificate'
+                  inputs:
+                    certSecureFile: CertificatsDistribution.p12
+                - task: InstallAppleProvisioningProfile@1
+                  displayName: 'Install an Apple provisioning profile'
+                  inputs:
+                    provProfileSecureFile: PlanningPokerProduction.mobileprovision
+                - script: |
+                    provfile=`ls ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision | head -1`
+                    prov=`security cms -D -i "$provfile" | grep UUID -A 1 | grep "<string>"`
+                    prov=`echo $prov | sed -E 's/^.*<string>//' | sed -E 's/<\/string>//'`
+                    echo '##vso[task.setvariable variable=signingProvisioningProfileID;]'$prov
+                    sign=`security find-identity -v -p codesigning | head -n 1 | sed -E 's/^[^"]+"//g' | sed -E 's/"//g'`
+                    echo '##vso[task.setvariable variable=signingIdentity;]'$sign
+                    echo "Found : $sign $prov"
+                    echo '##vso[task.setvariable variable=urlApi;]'https://planning-poker-team-api.azurewebsites.net
+                - bash: 'brew install p7zip'
+                  displayName: 'Bash Script'
+                - task: ExtractFiles@1
+                  displayName: 'Extract files '
+                  inputs:
+                    archiveFilePatterns: '$(Pipeline.Workspace)/**/*.ipa'
+                    destinationFolder: iOS/
+                - task: ios-bundle-identifier@1
+                  displayName: 'Change identifier in iOS/Payload/Game.Planning.Poker.Mobile.iOS.app/Info.plist'
+                  inputs:
+                    sourcePath: iOS/Payload/Game.Planning.Poker.Mobile.iOS.app/Info.plist
+                    bundleIdentifier: '$(bundle.Id)'
+                    bundleName: '$(bundle.Name)'
+                    bundleDisplayName: '$(bundle.Name)'
+                - task: JSONTokenizer@1
+                  displayName: 'Tokenize appsettings.json'
+                  inputs:
+                    sourcePath: 'iOS/'
+                    filePattern: '**/appsettings.json'
+                    tokenizeType: 'json'
+                    includes: ''
+                - task: ReplaceTokens@1
+                  displayName: 'Replace appsettings.json'
+                  inputs:
+                    sourcePath: iOS/
+                    filePattern: '**/appsettings.json'
+                    tokenRegex: '__([\w\.]+)__'
+                - task: ArchiveFiles@2
+                  displayName: 'Archive iOS/'
+                  inputs:
+                    rootFolderOrFile: iOS/
+                    includeRootFolder: false
+                    archiveFile: Game.Planning.Poker.Mobile.iOS.ipa
+                - task: IpaResign@1
+                  inputs:
+                    ipaPath: 'Game.Planning.Poker.Mobile.iOS.ipa'
+                    signMethod: 'id'
+                    signIdIdentity: '$(signingIdentity)'
+                    signIdUnlockKeychain: false
+                    provisionMethod: 'id'
+                    provIdProfileUuid: '$(signingProvisioningProfileID)'
+                - task: AppCenterDistribute@3
+                  displayName: 'Deploy Game.Planning.Poker.Mobile.iOS.ipa to Visual Studio App Center'
+                  inputs:
+                    serverEndpoint: 'App Center'
+                    appSlug: 'neocra/PlanningPoker-Prod-iOS'
+                    appFile: Game.Planning.Poker.Mobile.iOS.ipa
+                    symbolsIncludeParentDirectory: false
+                    releaseNotesInput: PROD
+                    isSilent: false
+                - task: AppStoreRelease@1
+                  inputs:
+                    serviceEndpoint: 'Apple'
+                    appIdentifier: 'com.neocra.planningpoker'
+                    appType: 'iOS'
+                    ipaPath: 'Game.Planning.Poker.Mobile.iOS.ipa'
+                    releaseTrack: 'TestFlight'
+                    releaseNotes: 'WhatToTest.txt'
+                    shouldSkipWaitingForProcessing: true
+      - deployment: droid
+        pool:
+          vmImage: 'macOS-latest'
+        environment: production
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: droid
+                - script: |
+                    echo '##vso[task.setvariable variable=urlApi;]'https://planning-poker-team-api.azurewebsites.net
+                - bash: 'unzip "$(Pipeline.Workspace)/droid/com.neocra.planningpoker.apk" assets/appsettings.json'
+                  displayName: 'Bash Script'
+                  workingDirectory: '$(Pipeline.Workspace)/droid/'
+                - task: JSONTokenizer@1
+                  displayName: 'Tokenize file(s)'
+                  inputs:
+                    sourcePath: $(Pipeline.Workspace)/droid/
+                    filePattern: '**/appsettings.json'
+                    tokenizeType: 'json'
+                    includes: ''
+                - task: ReplaceTokens@1
+                  displayName: 'Replace tokens in assets/'
+                  inputs:
+                    sourcePath: $(Pipeline.Workspace)/droid/
+                    filePattern: '**/appsettings.json'
+                    tokenRegex: '__([\w\.]+)__'
+                - bash: 'zip -u "$(Pipeline.Workspace)/droid/com.neocra.planningpoker.apk" assets/appsettings.json'
+                  displayName: 'Bash Script'
+                  workingDirectory: '$(Pipeline.Workspace)/droid/'
+                - task: AndroidSigning@3
+                  displayName: 'Signing and aligning APK file(s) **/*.apk'
+                  inputs:
+                    apkFiles: '$(Pipeline.Workspace)/droid/com.neocra.planningpoker.apk'
+                    apksignerKeystoreFile: planningpoker.jks
+                    apksignerKeystorePassword: planningpoker
+                    apksignerKeystoreAlias: planningpoker
+                    apksignerKeyPassword: planningpoker
+                - task: AppCenterDistribute@3
+                  displayName: 'Deploy com.neocra.planningpoker.apk to Visual Studio App Center'
+                  inputs:
+                    serverEndpoint: 'App Center'
+                    appSlug: 'neocra/PlanningPoker-Prod-Droid'
+                    appFile: $(Pipeline.Workspace)/droid/com.neocra.planningpoker.apk
+                    symbolsIncludeParentDirectory: false
+                    releaseNotesInput: PROD
+                    isSilent: false
+                - task: GooglePlayRelease@3
+                  inputs:
+                    serviceConnection: 'Google'
+                    apkFile: '$(Pipeline.Workspace)/droid/com.neocra.planningpoker.apk'
+                    track: 'beta'
+                    languageCode: 'fr-FR'
