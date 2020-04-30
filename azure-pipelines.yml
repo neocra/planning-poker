@@ -173,7 +173,7 @@ stages:
     variables:
       bundle.Id: 'com.neocra.planningpoker'
       bundle.Name: 'Planning Poker'
-      appCenter: 'ios=373ae46f-d7e9-4e59-aee1-e0dea4c3fca8;android=00d8b403-9905-49de-b334-0c66c17330a1'
+      appCenter: 'ios=707dbe42-2d2e-4578-bafc-fcc887df156e;android=13b54322-4829-495f-b0cd-bf5d2b4452ad'
       adModEnabled: true
     jobs:
       - deployment: API
