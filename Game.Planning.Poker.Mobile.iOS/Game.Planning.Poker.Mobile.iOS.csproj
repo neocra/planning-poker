@@ -165,7 +165,7 @@
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="1.1.0" />
     <PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
     <PackageReference Include="NETStandard.Library" Version="1.6.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Pattern.Config" Version="1.4.0-unstable0029" />
     <PackageReference Include="Pattern.Core" Version="1.4.0-unstable0029" />
     <PackageReference Include="Pattern.Core.Interfaces" Version="1.4.0-unstable0029" />
